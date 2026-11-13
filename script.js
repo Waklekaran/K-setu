@@ -17,3 +17,25 @@ const supabaseClient = window.supabase.createClient(
 // Connection setup confirmation
 console.log("KaranX Supabase client initialized!");
 
+// =====================================
+// KARANX - INITIAL CONNECTION TEST
+// =====================================
+
+window.addEventListener("load", () => {
+    console.log("KaranX JavaScript loaded!");
+
+    if (window.supabase) {
+        console.log("Supabase library loaded!");
+
+        if (typeof supabaseClient !== "undefined") {
+            console.log("KaranX Supabase client initialized!");
+        } else {
+            console.error("Supabase client not initialized.");
+        }
+
+    } else {
+        console.error("Supabase library failed to load.");
+    }
+});
+
+

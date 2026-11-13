@@ -73,27 +73,54 @@ window.addEventListener("load", () => {
     document.body.appendChild(statusBox);
 });
 
+
 // =====================================
-// KARANX - DATABASE CONNECTION TEST
+// KARANX - VISIBLE DATABASE TEST
 // =====================================
 
-async function testDatabaseConnection() {
-    console.log("Testing KaranX database...");
+async function testDatabaseConnectionVisible() {
+    const box = document.createElement("div");
 
-    const { data, error } = await supabaseClient
-        .from("profiles")
-        .select("id")
-        .limit(1);
+    box.style.cssText = `
+        position: fixed;
+        bottom: 15px;
+        left: 10px;
+        right: 10px;
+        padding: 16px;
+        background: #eff6ff;
+        color: #111827;
+        border: 2px solid #2563eb;
+        border-radius: 12px;
+        z-index: 10000;
+        font-size: 14px;
+    `;
 
-    if (error) {
-        console.error("Database test failed:", error.message);
-        return;
+    box.textContent = "KaranX: Testing database connection...";
+    document.body.appendChild(box);
+
+    try {
+        const { data, error } = await supabaseClient
+            .from("profiles")
+            .select("id")
+            .limit(1);
+
+        if (error) {
+            box.textContent =
+                "Database test error: " + error.message;
+        } else {
+            box.textContent =
+                "Supabase query completed! Rows received: " +
+                data.length +
+                ".";
+        }
+
+    } catch (error) {
+        box.textContent =
+            "Connection error: " + error.message;
     }
-
-    console.log("Database connection successful!");
-    console.log("Profiles table is accessible.");
 }
 
-testDatabaseConnection();
+testDatabaseConnectionVisible();
+
 
 

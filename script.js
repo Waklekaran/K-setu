@@ -38,4 +38,39 @@ window.addEventListener("load", () => {
     }
 });
 
+// =====================================
+// KARANX - VISIBLE CONNECTION STATUS
+// =====================================
+
+window.addEventListener("load", () => {
+    const statusBox = document.createElement("div");
+
+    statusBox.style.cssText = `
+        position: fixed;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+        padding: 15px;
+        background: #eff6ff;
+        color: #111827;
+        border: 2px solid #2563eb;
+        border-radius: 10px;
+        z-index: 9999;
+        font-size: 14px;
+    `;
+
+    if (window.supabase && typeof supabaseClient !== "undefined") {
+        statusBox.textContent =
+            "KaranX: JavaScript loaded. Supabase library and client initialized!";
+    } else if (window.supabase) {
+        statusBox.textContent =
+            "KaranX: Supabase library loaded, but client initialization failed.";
+    } else {
+        statusBox.textContent =
+            "KaranX: Supabase library failed to load.";
+    }
+
+    document.body.appendChild(statusBox);
+});
+
 

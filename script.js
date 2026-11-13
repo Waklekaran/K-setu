@@ -17,6 +17,106 @@ const supabaseClient = window.supabase.createClient(
 // Connection setup confirmation
 console.log("KaranX Supabase client initialized!");
 
+// ==================================
+// KARANX REGISTRATION FUNCTIONALITY
+// ==================================
+
+// Show the selected registration form
+function showRegistration(role) {
+    const workerForm = document.getElementById("workerForm");
+    const employerForm = document.getElementById("employerForm");
+    const message = document.getElementById("registrationMessage");
+
+    workerForm.hidden = role !== "worker";
+    employerForm.hidden = role !== "employer";
+
+    message.textContent = "";
+
+    document.getElementById("get-started").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+// Worker registration
+document.getElementById("workerForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const name = document.getElementById("workerName").value.trim();
+    const email = document.getElementById("workerEmail").value.trim();
+    const password = document.getElementById("workerPassword").value;
+    const city = document.getElementById("workerCity").value.trim();
+    const skills = document.getElementById("workerSkills").value.trim();
+
+    const message = document.getElementById("registrationMessage");
+
+    message.textContent = "Creating your worker account...";
+
+    const { data, error } = await supabaseClient.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+            data: {
+                role: "worker",
+                full_name: name,
+                city: city,
+                skills: skills
+            }
+        }
+    });
+
+    if (error) {
+        message.textContent = error.message;
+        return;
+    }
+
+    if (data.session) {
+        message.textContent = "Worker account created successfully!";
+    } else {
+        message.textContent = "Registration received! Please check your email to confirm your account.";
+    }
+});
+
+// Employer registration
+document.getElementById("employerForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const name = document.getElementById("employerName").value.trim();
+    const email = document.getElementById("employerEmail").value.trim();
+    const password = document.getElementById("employerPassword").value;
+    const city = document.getElementById("employerCity").value.trim();
+    const businessName = document.getElementById("businessName").value.trim();
+    const businessType = document.getElementById("businessType").value.trim();
+
+    const message = document.getElementById("registrationMessage");
+
+    message.textContent = "Creating your employer account...";
+
+    const { data, error } = await supabaseClient.auth.signUp({
+        email: email,
+        password: password,
+        options: {
+            data: {
+                role: "employer",
+                full_name: name,
+                city: city,
+                business_name: businessName,
+                business_type: businessType
+            }
+        }
+    });
+
+    if (error) {
+        message.textContent = error.message;
+        return;
+    }
+
+    if (data.session) {
+        message.textContent = "Employer account created successfully!";
+    } else {
+        message.textContent = "Registration received! Please check your email to confirm your account.";
+    }
+});
+
 
 
     

@@ -73,4 +73,27 @@ window.addEventListener("load", () => {
     document.body.appendChild(statusBox);
 });
 
+// =====================================
+// KARANX - DATABASE CONNECTION TEST
+// =====================================
+
+async function testDatabaseConnection() {
+    console.log("Testing KaranX database...");
+
+    const { data, error } = await supabaseClient
+        .from("profiles")
+        .select("id")
+        .limit(1);
+
+    if (error) {
+        console.error("Database test failed:", error.message);
+        return;
+    }
+
+    console.log("Database connection successful!");
+    console.log("Profiles table is accessible.");
+}
+
+testDatabaseConnection();
+
 

@@ -103,28 +103,108 @@
             </div>
         </section>
 
-        <!-- Get Started -->
-        <section class="get-started section" id="get-started">
-            <div class="container">
-                <p class="section-label">GET STARTED</p>
+        
+<!-- GET STARTED / REGISTRATION -->
 
-                <h2>Choose Your Role</h2>
+<section class="get-started section" id="get-started">
+    <div class="container">
 
-                <div class="role-options">
-                    <article class="role-card">
-                        <h3>I'm a Worker</h3>
-                        <p>Discover jobs that match your skills.</p>
-                        <a href="#home">Worker Registration Coming Soon</a>
-                    </article>
+        <p class="section-label">JOIN KARANX</p>
+        <h2>Create Your Account</h2>
 
-                    <article class="role-card">
-                        <h3>I'm an Employer</h3>
-                        <p>Find skilled workers for your business.</p>
-                        <a href="#home">Employer Registration Coming Soon</a>
-                    </article>
-                </div>
-            </div>
-        </section>
+        <p>Choose how you want to use KaranX.</p>
+
+        <div class="role-options">
+
+            <article class="role-card">
+                <h3>I'm a Worker</h3>
+                <p>Find jobs that match your skills.</p>
+                <button
+                    type="button"
+                    class="primary-button"
+                    onclick="showRegistration('worker')">
+                    Register as Worker
+                </button>
+            </article>
+
+            <article class="role-card">
+                <h3>I'm an Employer</h3>
+                <p>Find skilled workers for your business.</p>
+                <button
+                    type="button"
+                    class="primary-button"
+                    onclick="showRegistration('employer')">
+                    Register as Employer
+                </button>
+            </article>
+
+        </div>
+
+        <!-- Worker Registration Form -->
+
+        <form id="workerForm" class="registration-form" hidden>
+
+            <h2>Worker Registration</h2>
+
+            <input type="text" id="workerName"
+                placeholder="Full Name" required>
+
+            <input type="email" id="workerEmail"
+                placeholder="Email Address" required>
+
+            <input type="password" id="workerPassword"
+                placeholder="Password (minimum 8 characters)"
+                minlength="8" required>
+
+            <input type="text" id="workerCity"
+                placeholder="Your City" required>
+
+            <input type="text" id="workerSkills"
+                placeholder="Skills (e.g. Electrician, Plumbing)"
+                required>
+
+            <button type="submit" class="primary-button">
+                Create Worker Account
+            </button>
+
+        </form>
+
+        <!-- Employer Registration Form -->
+
+        <form id="employerForm" class="registration-form" hidden>
+
+            <h2>Employer Registration</h2>
+
+            <input type="text" id="employerName"
+                placeholder="Your Full Name" required>
+
+            <input type="email" id="employerEmail"
+                placeholder="Email Address" required>
+
+            <input type="password" id="employerPassword"
+                placeholder="Password (minimum 8 characters)"
+                minlength="8" required>
+
+            <input type="text" id="employerCity"
+                placeholder="Business City" required>
+
+            <input type="text" id="businessName"
+                placeholder="Business Name" required>
+
+            <input type="text" id="businessType"
+                placeholder="Business Type" required>
+
+            <button type="submit" class="primary-button">
+                Create Employer Account
+            </button>
+
+        </form>
+
+        <p id="registrationMessage" role="status"></p>
+
+    </div>
+</section>
+
 
     </main>
 

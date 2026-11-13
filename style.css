@@ -416,3 +416,6 @@ a {
         padding: 18px;
     }
 }
+[hidden] {
+    display: none !important;
+}

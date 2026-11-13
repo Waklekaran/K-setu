@@ -21,26 +21,68 @@ console.log("KaranX Supabase client initialized!");
 // KARANX REGISTRATION FUNCTIONALITY
 // ==================================
 
-// Show the selected registration form
+
+// Show selected registration screen
 function showRegistration(role) {
     const workerForm = document.getElementById("workerForm");
     const employerForm = document.getElementById("employerForm");
+    const roleOptions = document.querySelector(".role-options");
+
+    const sectionLabel = document.querySelector(
+        ".get-started .container > .section-label"
+    );
+
+    const mainHeading = document.querySelector(
+        ".get-started .container > h2"
+    );
+
+    const description = document.querySelector(
+        ".get-started .container > p:not(#registrationMessage)"
+    );
+
     const message = document.getElementById("registrationMessage");
+
+    roleOptions.hidden = true;
+    sectionLabel.hidden = true;
+    mainHeading.hidden = true;
+    description.hidden = true;
 
     workerForm.hidden = role !== "worker";
     employerForm.hidden = role !== "employer";
 
     message.textContent = "";
 
-   const selectedForm = role === "worker"
-    ? workerForm
-    : employerForm;
-
-selectedForm.scrollIntoView({
-    behavior: "smooth",
-    block: "center"
-}); 
+    document.getElementById("get-started").scrollIntoView({
+        behavior: "smooth"
+    });
 }
+
+// Return to role selection screen
+function showRoleSelection() {
+    document.getElementById("workerForm").hidden = true;
+    document.getElementById("employerForm").hidden = true;
+
+    document.querySelector(".role-options").hidden = false;
+
+    document.querySelector(
+        ".get-started .container > .section-label"
+    ).hidden = false;
+
+    document.querySelector(
+        ".get-started .container > h2"
+    ).hidden = false;
+
+    document.querySelector(
+        ".get-started .container > p:not(#registrationMessage)"
+    ).hidden = false;
+
+    document.getElementById("registrationMessage").textContent = "";
+
+    document.getElementById("get-started").scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
 
 // Worker registration
 document.getElementById("workerForm").addEventListener("submit", async function(event) {

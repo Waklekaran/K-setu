@@ -32,9 +32,14 @@ function showRegistration(role) {
 
     message.textContent = "";
 
-    document.getElementById("get-started").scrollIntoView({
-        behavior: "smooth"
-    });
+   const selectedForm = role === "worker"
+    ? workerForm
+    : employerForm;
+
+selectedForm.scrollIntoView({
+    behavior: "smooth",
+    block: "center"
+}); 
 }
 
 // Worker registration

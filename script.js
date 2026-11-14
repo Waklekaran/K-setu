@@ -485,6 +485,114 @@ if (addSkillsButton) {
     });
 }
 
+// =====================================
+// KARANX - EMPLOYER DASHBOARD BUTTONS
+// =====================================
+
+const viewBusinessButton =
+    document.getElementById("viewBusinessButton");
+
+const editBusinessButton =
+    document.getElementById("editBusinessButton");
+
+const postJobButton =
+    document.getElementById("postJobButton");
+
+function hideEmployerSections() {
+    document.getElementById("businessProfileSection").hidden = true;
+    document.getElementById("editBusinessSection").hidden = true;
+    document.getElementById("postJobSection").hidden = true;
+}
+
+// VIEW BUSINESS PROFILE
+if (viewBusinessButton) {
+    viewBusinessButton.addEventListener("click", async function () {
+        hideEmployerSections();
+
+        const section = document.getElementById("businessProfileSection");
+        const details = document.getElementById("businessProfileDetails");
+
+        section.hidden = false;
+        details.textContent = "Loading business profile...";
+
+        try {
+            const { data: userData, error: userError } =
+                await supabaseClient.auth.getUser();
+
+            if (userError) throw userError;
+            if (!userData.user) throw new Error("Please login first.");
+
+            const { data, error } = await supabaseClient
+                .from("employer_profiles")
+                .select("business_name, business_type, city, description")
+                .eq("user_id", userData.user.id)
+                .single();
+
+            if (error) throw error;
+
+            details.textContent =
+                "Business Name: " + (data.business_name || "Not added") +
+                "\nBusiness Type: " + (data.business_type || "Not added") +
+                "\nCity: " + (data.city || "Not added") +
+                "\nDescription: " + (data.description || "Not added");
+
+            details.style.whiteSpace = "pre-line";
+
+        } catch (error) {
+            details.textContent = "Loading failed: " + error.message;
+        }
+    });
+}
+
+// EDIT BUSINESS PROFILE
+if (editBusinessButton) {
+    editBusinessButton.addEventListener("click", async function () {
+        hideEmployerSections();
+
+        const section = document.getElementById("editBusinessSection");
+        section.hidden = false;
+
+        try {
+            const { data: userData, error: userError } =
+                await supabaseClient.auth.getUser();
+
+            if (userError) throw userError;
+            if (!userData.user) throw new Error("Please login first.");
+
+            const { data, error } = await supabaseClient
+                .from("employer_profiles")
+                .select("business_name, business_type, city, description")
+                .eq("user_id", userData.user.id)
+                .single();
+
+            if (error) throw error;
+
+            document.getElementById("editBusinessName").value =
+                data.business_name || "";
+
+            document.getElementById("editBusinessType").value =
+                data.business_type || "";
+
+            document.getElementById("editBusinessCity").value =
+                data.city || "";
+
+            document.getElementById("editBusinessDescription").value =
+                data.description || "";
+
+        } catch (error) {
+            alert("Business profile loading failed: " + error.message);
+        }
+    });
+}
+
+// POST A JOB
+if (postJobButton) {
+    postJobButton.addEventListener("click", function () {
+        hideEmployerSections();
+        document.getElementById("postJobSection").hidden = false;
+    });
+}
+
 console.log("Supabase Client:", supabaseClient);
 
 

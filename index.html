@@ -187,6 +187,33 @@
             <input type="text" id="workerSkills"
                 placeholder="Skills (e.g. Electrician, Plumbing)"
                 required>
+            <input
+    type="number"
+    id="workerExperience"
+    placeholder="Experience in years"
+    min="0"
+    required
+>
+
+<input
+    type="number"
+    id="workerWage"
+    placeholder="Expected Daily Wage (₹)"
+    min="1"
+    required
+>
+
+<select id="workerAvailability" required>
+    <option value="">Select Availability</option>
+    <option value="available">Available</option>
+    <option value="unavailable">Not Available</option>
+</select>
+
+<textarea
+    id="workerBio"
+    placeholder="Tell employers about yourself and your work"
+    required
+></textarea>
 
             <button type="submit" class="primary-button">
                 Create Worker Account

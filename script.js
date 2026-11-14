@@ -585,6 +585,60 @@ if (editBusinessButton) {
     });
 }
 
+// =====================================
+// KARANX - SAVE BUSINESS PROFILE
+// =====================================
+
+const saveBusinessButton = document.getElementById("saveBusinessButton");
+
+if (saveBusinessButton) {
+    saveBusinessButton.addEventListener("click", async function () {
+        const businessName = document.getElementById("editBusinessName").value.trim();
+        const businessType = document.getElementById("editBusinessType").value.trim();
+        const city = document.getElementById("editBusinessCity").value.trim();
+        const description = document.getElementById("editBusinessDescription").value.trim();
+
+        if (!businessName || !city) {
+            alert("Business Name and City are required!");
+            return;
+        }
+
+        try {
+            saveBusinessButton.disabled = true;
+            saveBusinessButton.textContent = "Saving...";
+
+            const { data: { user }, error: userError } =
+                await supabaseClient.auth.getUser();
+
+            if (userError || !user) {
+                throw new Error("Please login again.");
+            }
+
+            const { error } = await supabaseClient
+                .from("employer_profiles")
+                .update({
+                    business_name: businessName,
+                    business_type: businessType,
+                    city: city,
+                    description: description
+                })
+                .eq("user_id", user.id);
+
+            if (error) throw error;
+
+            alert("Business Profile Updated Successfully!");
+
+            document.getElementById("editBusinessSection").hidden = true;
+
+        } catch (error) {
+            alert("Update failed: " + error.message);
+        } finally {
+            saveBusinessButton.disabled = false;
+            saveBusinessButton.textContent = "Save Business Profile";
+        }
+    });
+}
+
 // POST A JOB
 if (postJobButton) {
     postJobButton.addEventListener("click", function () {

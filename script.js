@@ -974,6 +974,97 @@ if (saveEditedJobButton) {
     });
 }
 
+const saveWorkerProfileButton = document.getElementById(
+    "saveWorkerProfileButton"
+);
+
+if (saveWorkerProfileButton) {
+    saveWorkerProfileButton.addEventListener("click", async function () {
+        const fullName = document.getElementById("editWorkerName").value.trim();
+        const city = document.getElementById("editWorkerCity").value.trim();
+        const experience = Number(
+            document.getElementById("editWorkerExperience").value
+        );
+        const wage = Number(
+            document.getElementById("editWorkerWage").value
+        );
+        const availability = document.getElementById(
+            "editWorkerAvailability"
+        ).value;
+        const bio = document.getElementById("editWorkerBio").value.trim();
+
+        if (!fullName || !city) {
+            alert("Please enter your name and city.");
+            return;
+        }
+
+        if (
+            !Number.isFinite(experience) || experience < 0 ||
+            !Number.isFinite(wage) || wage < 0
+        ) {
+            alert("Please enter valid experience and wage.");
+            return;
+        }
+
+        if (!["available", "busy", "unavailable"].includes(availability)) {
+            alert("Please select a valid availability.");
+            return;
+        }
+
+        try {
+            saveWorkerProfileButton.disabled = true;
+            saveWorkerProfileButton.textContent = "Saving...";
+
+            const { data: { user }, error: userError } =
+                await supabaseClient.auth.getUser();
+
+            if (userError) throw userError;
+            if (!user) throw new Error("Please login again.");
+
+            const { data: profile, error: profileError } =
+                await supabaseClient
+                    .from("profiles")
+                    .update({
+                        full_name: fullName,
+                        city: city
+                    })
+                    .eq("id", user.id)
+                    .select("id")
+                    .maybeSingle();
+
+            if (profileError) throw profileError;
+            if (!profile) throw new Error("Main profile was not updated.");
+
+            const { data: workerProfile, error: workerError } =
+                await supabaseClient
+                    .from("worker_profiles")
+                    .update({
+                        experience_years: experience,
+                        expected_daily_wage: wage,
+                        availability: availability,
+                        bio: bio
+                    })
+                    .eq("user_id", user.id)
+                    .select("user_id")
+                    .maybeSingle();
+
+            if (workerError) throw workerError;
+            if (!workerProfile) {
+                throw new Error("Worker profile was not updated.");
+            }
+
+            alert("Worker profile updated successfully!");
+            document.getElementById("editWorkerProfileSection").hidden = true;
+
+        } catch (error) {
+            alert("Profile update failed: " + error.message);
+        } finally {
+            saveWorkerProfileButton.disabled = false;
+            saveWorkerProfileButton.textContent = "Save Profile";
+        }
+    });
+}
+
 
 
     

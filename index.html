@@ -143,8 +143,13 @@
 
  <div class="login-entry">
     <p>Already have an account?</p>
-    <button type="button" onclick="showLogin()">
-        Login to KaranX
+    <button type="button"
+onclick="
+document.getElementById('mainScreen').hidden = true;
+document.getElementById('registrationScreen').hidden = true;
+document.getElementById('loginScreen').hidden = false;
+">
+    Login to KaranX
     </button>
  </div>
 </div>

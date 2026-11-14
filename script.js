@@ -1407,6 +1407,91 @@ async function loadEmployerWorkerVideos() {
     }
 }
 
+// =====================================
+// KARANX - VOICE SKILL INPUT
+// =====================================
+
+const SpeechRecognition =
+    window.SpeechRecognition || window.webkitSpeechRecognition;
+
+let workerRecognition = null;
+
+const startVoiceButton = document.getElementById("startVoiceButton");
+const stopVoiceButton = document.getElementById("stopVoiceButton");
+const voiceLanguage = document.getElementById("workerVoiceLanguage");
+const voiceStatus = document.getElementById("voiceStatus");
+const voiceTranscript = document.getElementById("workerVoiceTranscript");
+const saveVoiceSkillsButton = document.getElementById("saveVoiceSkillsButton");
+const workerSkillsInput = document.getElementById("workerSkillsInput");
+
+if (startVoiceButton && stopVoiceButton) {
+
+    if (!SpeechRecognition) {
+        voiceStatus.textContent =
+            "Voice recognition is not supported in this browser. Try Chrome.";
+        startVoiceButton.disabled = true;
+    } else {
+
+        workerRecognition = new SpeechRecognition();
+
+        workerRecognition.continuous = true;
+        workerRecognition.interimResults = true;
+
+        workerRecognition.onstart = function () {
+            voiceStatus.textContent = "Listening... Speak now.";
+        };
+
+        workerRecognition.onresult = function (event) {
+            let finalText = "";
+
+            for (let i = 0; i < event.results.length; i++) {
+                if (event.results[i].isFinal) {
+                    finalText += event.results[i][0].transcript + " ";
+                }
+            }
+
+            if (finalText.trim()) {
+                voiceTranscript.value =
+                    (voiceTranscript.value + " " + finalText).trim();
+            }
+        };
+
+        workerRecognition.onerror = function (event) {
+            voiceStatus.textContent =
+                "Voice error: " + event.error;
+        };
+
+        workerRecognition.onend = function () {
+            voiceStatus.textContent = "Recording stopped.";
+        };
+
+        startVoiceButton.addEventListener("click", function () {
+            workerRecognition.lang = voiceLanguage.value;
+            workerRecognition.start();
+        });
+
+        stopVoiceButton.addEventListener("click", function () {
+            workerRecognition.stop();
+        });
+    }
+}
+
+// Put voice transcript into skills box for review
+if (saveVoiceSkillsButton) {
+    saveVoiceSkillsButton.addEventListener("click", function () {
+        const spokenText = voiceTranscript.value.trim();
+
+        if (!spokenText) {
+            alert("Please speak your skills first.");
+            return;
+        }
+
+        workerSkillsInput.value = spokenText;
+
+        alert("Voice text added! Review it, then click Save Skills.");
+    });
+}
+
 
 
 

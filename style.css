@@ -482,3 +482,75 @@ a {
     text-align: center;
     margin-top: 15px;
 }
+
+/* ================================
+   KARANX LOGIN SCREEN
+================================ */
+
+#loginScreen {
+    min-height: 100vh;
+    padding: 30px 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--light);
+}
+
+#loginScreen[hidden] {
+    display: none !important;
+}
+
+#loginScreen .registration-container {
+    width: 100%;
+    max-width: 420px;
+    padding: 28px 22px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+#loginScreen h2 {
+    color: var(--dark);
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+#loginScreen p {
+    color: var(--text);
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+#loginScreen label {
+    display: block;
+    margin: 14px 0 7px;
+    color: var(--dark);
+    font-weight: 600;
+}
+
+#loginScreen input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+}
+
+#loginScreen input:focus {
+    border-color: var(--primary);
+}
+
+#loginScreen button {
+    width: 100%;
+    margin-top: 18px;
+    padding: 13px;
+    border: none;
+    border-radius: 8px;
+    background: var(--primary);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}

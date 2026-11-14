@@ -440,6 +440,39 @@ window.scrollTo(0, 0);
     <button type="button" id="saveWorkerSkillsButton">
         Save Skills
     </button>
+    
+<hr>
+
+<h3>🎤 Explain Your Skills by Voice</h3>
+
+<label for="workerVoiceLanguage">Choose Language:</label>
+
+<select id="workerVoiceLanguage">
+    <option value="hi-IN">Hindi</option>
+    <option value="mr-IN">Marathi</option>
+    <option value="en-IN">English</option>
+</select>
+
+<button type="button" id="startVoiceButton">
+    Start Speaking
+</button>
+
+<button type="button" id="stopVoiceButton">
+    Stop Recording
+</button>
+
+<p id="voiceStatus">Ready to record.</p>
+
+<textarea
+    id="workerVoiceTranscript"
+    placeholder="Your spoken words will appear here..."
+    rows="4">
+</textarea>
+
+<button type="button" id="saveVoiceSkillsButton">
+    Save Voice Skills
+</button>
+
 
     <hr>
 

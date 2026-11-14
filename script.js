@@ -1300,6 +1300,113 @@ async function loadWorkerVideos() {
     }
 }
 
+ // =====================================
+ // EMPLOYER - VIEW WORKER VIDEOS
+ // =====================================
+
+const loadWorkerVideosButton =
+    document.getElementById("loadWorkerVideosButton");
+
+if (loadWorkerVideosButton) {
+    loadWorkerVideosButton.addEventListener("click", loadEmployerWorkerVideos);
+}
+
+async function loadEmployerWorkerVideos() {
+    const list = document.getElementById("employerWorkerVideosList");
+
+    if (!list) return;
+
+    list.textContent = "Loading worker videos...";
+
+    try {
+        const { data: { user }, error: authError } =
+            await supabaseClient.auth.getUser();
+
+        if (authError || !user) {
+            throw new Error("Please login again.");
+        }
+
+        const { data: employer, error: roleError } =
+            await supabaseClient
+                .from("profiles")
+                .select("role")
+                .eq("id", user.id)
+                .single();
+
+        if (roleError) throw roleError;
+
+        if (employer.role !== "employer") {
+            throw new Error("Only employers can view worker portfolios.");
+        }
+
+        const { data: videos, error } = await supabaseClient
+            .from("worker_videos")
+            .select("id, worker_id, title, description, storage_path, created_at")
+            .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        list.replaceChildren();
+
+        if (!videos || videos.length === 0) {
+            list.textContent = "No worker videos uploaded yet.";
+            return;
+        }
+
+        for (const item of videos) {
+            const card = document.createElement("div");
+
+            const { data: worker } = await supabaseClient
+                .from("profiles")
+                .select("full_name, city")
+                .eq("id", item.worker_id)
+                .maybeSingle();
+
+            const heading = document.createElement("h3");
+            heading.textContent = item.title || "Work Portfolio";
+
+            const name = document.createElement("p");
+            name.textContent = "Worker: " +
+                (worker?.full_name || "Name unavailable");
+
+            const city = document.createElement("p");
+            city.textContent = "City: " +
+                (worker?.city || "Not added");
+
+            const description = document.createElement("p");
+            description.textContent =
+                item.description || "No description";
+
+            const { data: signedData, error: signedError } =
+                await supabaseClient.storage
+                    .from("worker-work-videos")
+                    .createSignedUrl(item.storage_path, 3600);
+
+            card.append(heading, name, city, description);
+
+            if (signedError || !signedData?.signedUrl) {
+                const message = document.createElement("p");
+                message.textContent = "Video access unavailable.";
+                card.append(message);
+            } else {
+                const video = document.createElement("video");
+                video.src = signedData.signedUrl;
+                video.controls = true;
+                video.preload = "metadata";
+                video.style.width = "100%";
+                video.style.maxWidth = "400px";
+                card.append(video);
+            }
+
+            list.append(card);
+        }
+
+    } catch (error) {
+        console.error("Employer video error:", error);
+        list.textContent = "Error: " + error.message;
+    }
+}
+
 
 
 

@@ -554,3 +554,23 @@ a {
     font-weight: 600;
     cursor: pointer;
 }
+
+.login-entry {
+    text-align: center;
+    margin: 25px 0;
+}
+
+.login-entry p {
+    color: var(--text);
+    margin-bottom: 10px;
+}
+
+.login-entry button {
+    padding: 12px 24px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}

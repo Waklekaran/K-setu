@@ -250,15 +250,18 @@ Create Worker Account
 
         <form id="employerForm" class="registration-form" hidden>
 
-            <button type="button"
-onclick="
-document.getElementById('mainScreen').hidden = true;
-document.getElementById('registrationScreen').hidden = false;
-document.getElementById('workerForm').hidden = true;
-document.getElementById('employerForm').hidden = false;
-window.scrollTo(0, 0);
-">
-    Back
+            <button
+    type="button"
+    class="primary-button"
+    onclick="
+        document.getElementById('mainScreen').hidden = true;
+        document.getElementById('registrationScreen').hidden = false;
+        document.getElementById('workerForm').hidden = true;
+        document.getElementById('employerForm').hidden = false;
+        window.scrollTo(0, 0);
+    "
+>
+    Register as Employer
             </button>
 
             <h2>Employer Registration</h2>

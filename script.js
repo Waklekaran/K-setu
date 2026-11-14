@@ -272,6 +272,10 @@ if (logoutButton) {
             if (error) {
                 throw error;
             }
+            // Clear login form
+document.getElementById("loginEmail").value = "";
+document.getElementById("loginPassword").value = "";
+document.getElementById("loginMessage").textContent = "";
 
             document.getElementById("dashboardScreen").hidden = true;
             document.getElementById("workerDashboard").hidden = true;

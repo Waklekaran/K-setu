@@ -256,6 +256,17 @@ Create Worker Account
         <!-- Employer Registration -->
 
         <form id="employerForm" class="registration-form" hidden>
+            <button
+    type="button"
+    onclick="
+        document.getElementById('registrationScreen').hidden = true;
+        document.getElementById('mainScreen').hidden = false;
+        document.getElementById('employerForm').hidden = true;
+        window.scrollTo(0, 0);
+    "
+>
+    Back
+            </button>
 
             
 

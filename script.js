@@ -146,6 +146,9 @@ document.getElementById("employerForm").addEventListener("submit", async functio
         message.textContent = "Registration received! Please check your email to confirm your account.";
     }
 });
+console.log("Worker Form:", document.getElementById("workerForm"));
+console.log("Employer Form:", document.getElementById("employerForm"));
+console.log("Supabase Client:", supabaseClient);
 
 
 

@@ -1,4 +1,4 @@
-alert("KaranX JavaScript Loaded!");
+
 // =====================================
 // KARANX - SUPABASE CONFIGURATION
 // =====================================

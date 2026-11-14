@@ -181,8 +181,12 @@ console.log("Employer Form:", document.getElementById("employerForm"));
 
 function showLogin() {
     document.getElementById("mainScreen").hidden = true;
+
     document.getElementById("registrationScreen").hidden = true;
+
     document.getElementById("loginScreen").hidden = false;
+
+    window.scrollTo(0, 0);
 }
 
 document.getElementById("loginForm").addEventListener("submit", async function(event) {

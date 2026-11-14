@@ -403,6 +403,88 @@ if (viewProfileButton) {
     });
 }
 
+// =====================================
+// KARANX - WORKER PROFILE BUTTONS
+// =====================================
+
+const editProfileButton = document.getElementById("editProfileButton");
+const addSkillsButton = document.getElementById("addSkillsButton");
+
+if (editProfileButton) {
+    editProfileButton.addEventListener("click", async function () {
+        document.getElementById("workerProfileSection").hidden = true;
+        document.getElementById("addWorkerSkillsSection").hidden = true;
+
+        const section = document.getElementById("editWorkerProfileSection");
+        section.hidden = false;
+
+        try {
+            const { data: userData, error: userError } =
+                await supabaseClient.auth.getUser();
+
+            if (userError) throw userError;
+            if (!userData.user) throw new Error("Please login first.");
+
+            const userId = userData.user.id;
+
+            const { data: profile, error: profileError } =
+                await supabaseClient.from("profiles")
+                .select("full_name, city")
+                .eq("id", userId).single();
+
+            if (profileError) throw profileError;
+
+            const { data: worker, error: workerError } =
+                await supabaseClient.from("worker_profiles")
+                .select("experience_years, expected_daily_wage, availability, bio")
+                .eq("user_id", userId).single();
+
+            if (workerError) throw workerError;
+
+            document.getElementById("editWorkerName").value = profile.full_name || "";
+            document.getElementById("editWorkerCity").value = profile.city || "";
+            document.getElementById("editWorkerExperience").value = worker.experience_years ?? 0;
+            document.getElementById("editWorkerWage").value = worker.expected_daily_wage ?? "";
+            document.getElementById("editWorkerAvailability").value = worker.availability || "";
+            document.getElementById("editWorkerBio").value = worker.bio || "";
+
+        } catch (error) {
+            alert("Profile loading failed: " + error.message);
+        }
+    });
+}
+
+if (addSkillsButton) {
+    addSkillsButton.addEventListener("click", async function () {
+        document.getElementById("workerProfileSection").hidden = true;
+        document.getElementById("editWorkerProfileSection").hidden = true;
+
+        const section = document.getElementById("addWorkerSkillsSection");
+        section.hidden = false;
+
+        try {
+            const { data: userData, error: userError } =
+                await supabaseClient.auth.getUser();
+
+            if (userError) throw userError;
+            if (!userData.user) throw new Error("Please login first.");
+
+            const { data: worker, error: workerError } =
+                await supabaseClient.from("worker_profiles")
+                .select("skills")
+                .eq("user_id", userData.user.id).single();
+
+            if (workerError) throw workerError;
+
+            document.getElementById("workerSkillsInput").value =
+                (worker.skills || []).join(", ");
+
+        } catch (error) {
+            alert("Skills loading failed: " + error.message);
+        }
+    });
+}
+
 console.log("Supabase Client:", supabaseClient);
 
 

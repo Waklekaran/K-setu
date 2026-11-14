@@ -419,3 +419,66 @@ a {
 [hidden] {
     display: none !important;
 }
+/* Separate Registration Screen */
+
+#registrationScreen {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 24px;
+    box-sizing: border-box;
+    background: #f3f7fc;
+}
+
+#registrationScreen[hidden] {
+    display: none !important;
+}
+
+.registration-container {
+    width: 100%;
+    max-width: 450px;
+}
+
+.registration-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: white;
+    padding: 28px;
+    border-radius: 16px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.10);
+}
+
+.registration-form[hidden] {
+    display: none !important;
+}
+
+.registration-form input {
+    width: 100%;
+    padding: 13px;
+    border: 1px solid #d5dce5;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.registration-form h2 {
+    text-align: center;
+    color: #173b70;
+}
+
+.back-button {
+    align-self: flex-start;
+    padding: 9px 15px;
+    border: none;
+    border-radius: 7px;
+    background: #e5edf8;
+    color: #173b70;
+    cursor: pointer;
+}
+
+#registrationMessage {
+    text-align: center;
+    margin-top: 15px;
+}

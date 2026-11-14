@@ -51,6 +51,8 @@ function showRoleSelection() {
 
     document.getElementById("mainScreen").hidden = false;
 
+    document.getElementById("loginScreen").hidden = true;
+
     window.scrollTo(0, 0);
 }
 

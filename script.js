@@ -109,11 +109,11 @@ console.log("Worker signup error:", error);
     }
 });
 
+
 // Employer registration
 document.getElementById("employerForm").addEventListener("submit", async function(event) {
     event.preventDefault();
-document.getElementById("registrationMessage").textContent =
-    "EMPLOYER FORM SUBMITTED!";
+
     const name = document.getElementById("employerName").value.trim();
     const email = document.getElementById("employerEmail").value.trim();
     const password = document.getElementById("employerPassword").value;
@@ -125,22 +125,41 @@ document.getElementById("registrationMessage").textContent =
 
     message.textContent = "Creating your employer account...";
 
-    const { data, error } = await supabaseClient.auth.signUp({
-        console.log("Employer signup data:", data);
-console.log("Employer signup error:", error);
-        email: email,
-        password: password,
-        options: {
-    emailRedirectTo: "https://waklekaran.github.io/K-setu/",
-            data: {
-                role: "employer",
-                full_name: name,
-                city: city,
-                business_name: businessName,
-                business_type: businessType
+    try {
+        const { data, error } = await supabaseClient.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                emailRedirectTo: "https://waklekaran.github.io/K-setu/",
+                data: {
+                    role: "employer",
+                    full_name: name,
+                    city: city,
+                    business_name: businessName,
+                    business_type: businessType
+                }
             }
+        });
+
+        console.log("Employer signup data:", data);
+        console.log("Employer signup error:", error);
+
+        if (error) {
+            message.textContent = error.message;
+            return;
         }
-    });
+
+        if (data.session) {
+            message.textContent = "Employer account created successfully!";
+        } else {
+            message.textContent = "Registration received! Please check your email to confirm your account.";
+        }
+
+    } catch (err) {
+        message.textContent = "Signup failed: " + err.message;
+    }
+});
+
 
     if (error) {
         message.textContent = error.message;

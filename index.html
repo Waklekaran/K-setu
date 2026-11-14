@@ -137,10 +137,17 @@ window.scrollTo(0, 0);
                 <h3>I'm an Employer</h3>
                 <p>Find skilled workers for your business.</p>
                 <button
-                    type="button"
-                    class="primary-button"
-                    onclick="showRegistration('employer')">
-                    Register as Employer
+    type="button"
+    class="primary-button"
+    onclick="
+        document.getElementById('mainScreen').hidden = true;
+        document.getElementById('registrationScreen').hidden = false;
+        document.getElementById('workerForm').hidden = true;
+        document.getElementById('employerForm').hidden = false;
+        window.scrollTo(0, 0);
+    "
+>
+    Register as Employer
                 </button>
             </article>
         </div>
@@ -250,12 +257,7 @@ Create Worker Account
 
         <form id="employerForm" class="registration-form" hidden>
 
-            <button
-    type="button"
-    onclick="alert('Employer button clicked!')"
->
-    Register as Employer
-            </button>
+            
 
             <h2>Employer Registration</h2>
 

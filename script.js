@@ -24,63 +24,34 @@ console.log("KaranX Supabase client initialized!");
 
 // Show selected registration screen
 function showRegistration(role) {
-    const workerForm = document.getElementById("workerForm");
-    const employerForm = document.getElementById("employerForm");
-    const roleOptions = document.querySelector(".role-options");
 
-    const sectionLabel = document.querySelector(
-        ".get-started .container > .section-label"
-    );
+    document.getElementById("mainScreen").hidden = true;
 
-    const mainHeading = document.querySelector(
-        ".get-started .container > h2"
-    );
+    document.getElementById("registrationScreen").hidden = false;
 
-    const description = document.querySelector(
-        ".get-started .container > p:not(#registrationMessage)"
-    );
+    document.getElementById("workerForm").hidden =
+        role !== "worker";
 
-    const message = document.getElementById("registrationMessage");
-
-    roleOptions.hidden = true;
-    sectionLabel.hidden = true;
-    mainHeading.hidden = true;
-    description.hidden = true;
-
-    workerForm.hidden = role !== "worker";
-    employerForm.hidden = role !== "employer";
-
-    message.textContent = "";
-
-    document.getElementById("get-started").scrollIntoView({
-        behavior: "smooth"
-    });
-}
-
-// Return to role selection screen
-function showRoleSelection() {
-    document.getElementById("workerForm").hidden = true;
-    document.getElementById("employerForm").hidden = true;
-
-    document.querySelector(".role-options").hidden = false;
-
-    document.querySelector(
-        ".get-started .container > .section-label"
-    ).hidden = false;
-
-    document.querySelector(
-        ".get-started .container > h2"
-    ).hidden = false;
-
-    document.querySelector(
-        ".get-started .container > p:not(#registrationMessage)"
-    ).hidden = false;
+    document.getElementById("employerForm").hidden =
+        role !== "employer";
 
     document.getElementById("registrationMessage").textContent = "";
 
-    document.getElementById("get-started").scrollIntoView({
-        behavior: "smooth"
-    });
+    window.scrollTo(0, 0);
+}
+
+
+function showRoleSelection() {
+
+    document.getElementById("registrationScreen").hidden = true;
+
+    document.getElementById("workerForm").hidden = true;
+
+    document.getElementById("employerForm").hidden = true;
+
+    document.getElementById("mainScreen").hidden = false;
+
+    window.scrollTo(0, 0);
 }
 
 

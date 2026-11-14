@@ -696,3 +696,217 @@ cursor: pointer;
 #logoutButton:active {
 background: #b91c1c;
 }
+
+/* =====================================
+   KARANX - WORKER & EMPLOYER DASHBOARD
+===================================== */
+
+#dashboardScreen {
+    min-height: 100vh;
+    padding: 20px 15px;
+    background: #f1f5f9;
+    font-family: Arial, sans-serif;
+    color: #172033;
+    box-sizing: border-box;
+}
+
+#dashboardWelcome {
+    background: linear-gradient(135deg, #172554, #2563eb);
+    color: white;
+    padding: 27px 20px;
+    border-radius: 18px;
+    font-size: 24px;
+    margin: 0 0 22px;
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.18);
+}
+
+#workerDashboard,
+#employerDashboard {
+    width: 100%;
+    max-width: 650px;
+    margin: auto;
+}
+
+#workerDashboard > h3:first-child,
+#employerDashboard > h3:first-child {
+    font-size: 23px;
+    color: #172554;
+    margin-bottom: 8px;
+}
+
+#workerDashboard > p,
+#employerDashboard > p {
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 22px;
+}
+
+/* FEATURE CARDS */
+
+.worker-feature,
+.employer-feature {
+    background: white;
+    padding: 21px;
+    margin-bottom: 16px;
+    border-radius: 17px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 5px 17px rgba(15, 23, 42, 0.06);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.worker-feature h3,
+.employer-feature h3 {
+    color: #1d4ed8;
+    font-size: 19px;
+    margin: 0 0 10px;
+}
+
+.worker-feature p,
+.employer-feature p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+/* BUTTONS */
+
+.worker-feature button,
+.employer-feature button,
+#workerDashboard button,
+#employerDashboard button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 11px;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+.worker-feature button:active,
+.employer-feature button:active {
+    background: #1e40af;
+}
+
+/* PROFILE SECTIONS */
+
+#workerProfileSection,
+#editWorkerProfileSection,
+#addWorkerSkillsSection,
+#businessProfileSection,
+#editBusinessSection,
+#postJobSection {
+    background: white;
+    padding: 22px;
+    margin: 18px 0;
+    border-radius: 17px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 5px 17px rgba(15, 23, 42, 0.06);
+}
+
+#workerProfileSection h3,
+#editWorkerProfileSection h3,
+#addWorkerSkillsSection h3,
+#businessProfileSection h3,
+#editBusinessSection h3,
+#postJobSection h3 {
+    color: #1d4ed8;
+    margin-bottom: 18px;
+}
+
+/* FORM INPUTS */
+
+#workerDashboard label,
+#employerDashboard label {
+    display: block;
+    margin: 14px 0 7px;
+    color: #334155;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+#workerDashboard input,
+#workerDashboard textarea,
+#employerDashboard input,
+#employerDashboard textarea {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 13px;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 15px;
+    background: #fff;
+    outline: none;
+}
+
+#workerDashboard input:focus,
+#workerDashboard textarea:focus,
+#employerDashboard input:focus,
+#employerDashboard textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+#workerDashboard textarea,
+#employerDashboard textarea {
+    min-height: 95px;
+    resize: vertical;
+}
+
+/* PROFILE DETAILS */
+
+#workerProfileDetails,
+#businessProfileDetails {
+    color: #334155;
+    line-height: 1.9;
+    overflow-wrap: anywhere;
+}
+
+/* LOGOUT */
+
+#logoutButton {
+    display: block;
+    max-width: 650px;
+    width: 100%;
+    margin: 25px auto;
+    padding: 15px;
+    background: #dc2626;
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#logoutButton:active {
+    background: #991b1b;
+}
+
+/* MOBILE RESPONSIVE */
+
+@media (max-width: 480px) {
+    #dashboardScreen {
+        padding: 15px 12px;
+    }
+
+    #dashboardWelcome {
+        font-size: 21px;
+        padding: 23px 17px;
+    }
+
+    .worker-feature,
+    .employer-feature {
+        padding: 18px;
+    }
+}
+
+/* KEEP HIDDEN SECTIONS HIDDEN */
+
+#dashboardScreen [hidden] {
+    display: none !important;
+}

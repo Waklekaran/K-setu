@@ -53,6 +53,9 @@ function showRoleSelection() {
 
     document.getElementById("loginScreen").hidden = true;
 
+    document.getElementById("loginForm").reset();
+document.getElementById("loginMessage").textContent = "";
+
     window.scrollTo(0, 0);
 }
 

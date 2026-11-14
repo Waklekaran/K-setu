@@ -891,6 +891,89 @@ card.appendChild(editButton);
     });
 }
 
+// =====================================
+// KARANX - SAVE EDITED JOB
+// =====================================
+
+const saveEditedJobButton =
+    document.getElementById("saveEditedJobButton");
+
+if (saveEditedJobButton) {
+    saveEditedJobButton.addEventListener("click", async function () {
+
+        const jobId = document.getElementById("editJobId").value;
+        const title = document.getElementById("editJobTitle").value.trim();
+        const description = document.getElementById("editJobDescription").value.trim();
+        const skillsText = document.getElementById("editJobSkills").value.trim();
+        const wage = Number(document.getElementById("editJobWage").value);
+        const city = document.getElementById("editJobCity").value.trim();
+        const vacancies = Number(document.getElementById("editJobVacancies").value);
+        const duration = Number(document.getElementById("editJobDuration").value);
+
+        if (!jobId || !title || !description || !skillsText || !city) {
+            alert("Please fill all required fields!");
+            return;
+        }
+
+        if (
+            !Number.isFinite(wage) || wage <= 0 ||
+            !Number.isInteger(vacancies) || vacancies <= 0 ||
+            !Number.isInteger(duration) || duration <= 0
+        ) {
+            alert("Enter valid wage, vacancies and duration!");
+            return;
+        }
+
+        const requiredSkills = skillsText
+            .split(",")
+            .map(skill => skill.trim())
+            .filter(skill => skill.length > 0);
+
+        if (requiredSkills.length === 0) {
+            alert("Please enter at least one skill!");
+            return;
+        }
+
+        try {
+            saveEditedJobButton.disabled = true;
+            saveEditedJobButton.textContent = "Saving...";
+
+            const { data: { user }, error: userError } =
+                await supabaseClient.auth.getUser();
+
+            if (userError) throw userError;
+            if (!user) throw new Error("Please login again.");
+
+            const { error } = await supabaseClient
+                .from("jobs")
+                .update({
+                    title: title,
+                    description: description,
+                    required_skills: requiredSkills,
+                    daily_wage: wage,
+                    city: city,
+                    vacancies: vacancies,
+                    duration_days: duration
+                })
+                .eq("id", jobId)
+                .eq("employer_id", user.id);
+
+            if (error) throw error;
+
+            alert("Job updated successfully!");
+
+            document.getElementById("editJobSection").hidden = true;
+            manageJobsButton.click();
+
+        } catch (error) {
+            alert("Job update failed: " + error.message);
+        } finally {
+            saveEditedJobButton.disabled = false;
+            saveEditedJobButton.textContent = "Save Changes";
+        }
+    });
+}
+
 
 
     

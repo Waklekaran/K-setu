@@ -347,6 +347,62 @@ async function openDashboardFromExistingSession() {
 
 openDashboardFromExistingSession();
 
+// =====================================
+// KARANX - WORKER PROFILE
+// =====================================
+
+const viewProfileButton = document.getElementById("viewProfileButton");
+
+if (viewProfileButton) {
+    viewProfileButton.addEventListener("click", async function () {
+        const details = document.getElementById("workerProfileDetails");
+        const section = document.getElementById("workerProfileSection");
+
+        details.textContent = "Loading profile...";
+        section.hidden = false;
+
+        try {
+            const { data: userData, error: userError } =
+                await supabaseClient.auth.getUser();
+
+            if (userError) throw userError;
+            if (!userData.user) throw new Error("Please login first.");
+
+            const userId = userData.user.id;
+
+            const { data: profile, error: profileError } =
+                await supabaseClient
+                    .from("profiles")
+                    .select("full_name, city")
+                    .eq("id", userId)
+                    .single();
+
+            if (profileError) throw profileError;
+
+            const { data: worker, error: workerError } =
+                await supabaseClient
+                    .from("worker_profiles")
+                    .select("skills, experience_years, expected_daily_wage, availability, bio")
+                    .eq("user_id", userId)
+                    .single();
+
+            if (workerError) throw workerError;
+
+            details.innerHTML = `
+                <p><b>Name:</b> ${profile.full_name || "Not added"}</p>
+                <p><b>City:</b> ${profile.city || "Not added"}</p>
+                <p><b>Skills:</b> ${(worker.skills || []).join(", ") || "Not added"}</p>
+                <p><b>Experience:</b> ${worker.experience_years ?? 0} years</p>
+                <p><b>Expected Daily Wage:</b> ₹${worker.expected_daily_wage ?? "Not added"}</p>
+                <p><b>Availability:</b> ${worker.availability || "Not added"}</p>
+                <p><b>About:</b> ${worker.bio || "Not added"}</p>
+            `;
+        } catch (error) {
+            details.textContent = "Profile loading failed: " + error.message;
+        }
+    });
+}
+
 console.log("Supabase Client:", supabaseClient);
 
 

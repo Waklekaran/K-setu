@@ -180,13 +180,21 @@ console.log("Employer Form:", document.getElementById("employerForm"));
 // =====================================
 
 function showLogin() {
-    document.getElementById("mainScreen").hidden = true;
+    alert("SHOW LOGIN FUNCTION CALLED!");
 
-    document.getElementById("registrationScreen").hidden = true;
+    const main = document.getElementById("mainScreen");
+    const registration = document.getElementById("registrationScreen");
+    const login = document.getElementById("loginScreen");
 
-    document.getElementById("loginScreen").hidden = false;
+    alert(
+        "Main: " + !!main +
+        "\nRegistration: " + !!registration +
+        "\nLogin: " + !!login
+    );
 
-    window.scrollTo(0, 0);
+    main.hidden = true;
+    registration.hidden = true;
+    login.hidden = false;
 }
 
 document.getElementById("loginForm").addEventListener("submit", async function(event) {

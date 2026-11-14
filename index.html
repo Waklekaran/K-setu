@@ -493,10 +493,44 @@ window.scrollTo(0, 0);
         </button>
     </div>
 
-    <div id="postJobSection" hidden>
-        <h3>Post a New Job</h3>
-        <p>Job posting form will be added next.</p>
-    </div>
+    
+<div id="postJobSection" hidden>
+    <h3>Post a New Job</h3>
+    <p>Enter the details of your job opportunity.</p>
+
+    <label>Job Title</label>
+    <input type="text" id="jobTitle"
+        placeholder="e.g. Electrician Required" required>
+
+    <label>Job Description</label>
+    <textarea id="jobDescription"
+        placeholder="Describe the work..." required></textarea>
+
+    <label>Required Skills</label>
+    <input type="text" id="jobSkills"
+        placeholder="Electrician, Wiring, Repair" required>
+
+    <label>Daily Wage (₹)</label>
+    <input type="number" id="jobWage"
+        min="1" placeholder="500" required>
+
+    <label>Job City</label>
+    <input type="text" id="jobCity"
+        placeholder="Enter city" required>
+
+    <label>Number of Vacancies</label>
+    <input type="number" id="jobVacancies"
+        min="1" placeholder="2" required>
+
+    <label>Duration (Days)</label>
+    <input type="number" id="jobDuration"
+        min="1" placeholder="30" required>
+
+    <button type="button" id="publishJobButton">
+        Publish Job
+    </button>
+</div>
+
 </div>
 
 

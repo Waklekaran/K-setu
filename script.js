@@ -1165,6 +1165,63 @@ if (uploadWorkerVideoButton) {
     });
 }
 
+const saveWorkerSkillsButton = document.getElementById(
+    "saveWorkerSkillsButton"
+);
+
+if (saveWorkerSkillsButton) {
+    saveWorkerSkillsButton.addEventListener("click", async function () {
+        const skillsText = document.getElementById(
+            "workerSkillsInput"
+        ).value.trim();
+
+        if (!skillsText) {
+            alert("Please enter at least one skill!");
+            return;
+        }
+
+        const skills = [...new Set(
+            skillsText
+                .split(",")
+                .map(skill => skill.trim())
+                .filter(skill => skill.length > 0)
+        )];
+
+        try {
+            saveWorkerSkillsButton.disabled = true;
+            saveWorkerSkillsButton.textContent = "Saving...";
+
+            const { data: { user }, error: userError } =
+                await supabaseClient.auth.getUser();
+
+            if (userError) throw userError;
+            if (!user) throw new Error("Please login again.");
+
+            const { data, error } = await supabaseClient
+                .from("worker_profiles")
+                .update({ skills: skills })
+                .eq("user_id", user.id)
+                .select("user_id")
+                .maybeSingle();
+
+            if (error) throw error;
+
+            if (!data) {
+                throw new Error("Worker profile not found.");
+            }
+
+            alert("Skills saved successfully!");
+
+        } catch (error) {
+            alert("Skills save failed: " + error.message);
+        } finally {
+            saveWorkerSkillsButton.disabled = false;
+            saveWorkerSkillsButton.textContent = "Save Skills";
+        }
+    });
+}
+
+
 
 
     

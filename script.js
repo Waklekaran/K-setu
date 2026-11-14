@@ -786,29 +786,80 @@ if (manageJobsButton) {
                 return;
             }
 
-            jobs.forEach(function (job) {
-                const card = document.createElement("div");
-                card.className = "job-card";
+            
+jobs.forEach(function (job) {
+    const card = document.createElement("div");
+    card.className = "job-card";
 
-                const title = document.createElement("h4");
-                title.textContent = job.title;
+    const title = document.createElement("h4");
+    title.textContent = job.title;
 
-                const details = document.createElement("p");
-                details.textContent =
-                    "Description: " + job.description +
-                    "\nSkills: " + (job.required_skills || []).join(", ") +
-                    "\nDaily Wage: ₹" + job.daily_wage +
-                    "\nCity: " + job.city +
-                    "\nVacancies: " + job.vacancies +
-                    "\nDuration: " + job.duration_days + " days" +
-                    "\nStatus: " + job.status;
+    const details = document.createElement("p");
+    details.textContent =
+        "Description: " + job.description +
+        "\nSkills: " + (job.required_skills || []).join(", ") +
+        "\nDaily Wage: ₹" + job.daily_wage +
+        "\nCity: " + job.city +
+        "\nVacancies: " + job.vacancies +
+        "\nDuration: " + job.duration_days + " days" +
+        "\nStatus: " + job.status;
 
-                details.style.whiteSpace = "pre-line";
+    details.style.whiteSpace = "pre-line";
 
-                card.appendChild(title);
-                card.appendChild(details);
-                jobsList.appendChild(card);
-            });
+    const statusButton = document.createElement("button");
+    statusButton.textContent =
+        job.status === "active" ? "Close Job" : "Reopen Job";
+
+    statusButton.addEventListener("click", async function () {
+        const newStatus =
+            job.status === "active" ? "closed" : "active";
+
+        const { error } = await supabaseClient
+            .from("jobs")
+            .update({ status: newStatus })
+            .eq("id", job.id)
+            .eq("employer_id", user.id);
+
+        if (error) {
+            alert("Status update failed: " + error.message);
+            return;
+        }
+
+        alert("Job status updated!");
+        manageJobsButton.click();
+    });
+
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Delete Job";
+
+    deleteButton.addEventListener("click", async function () {
+        if (!confirm("Are you sure you want to delete this job?")) {
+            return;
+        }
+
+        const { error } = await supabaseClient
+            .from("jobs")
+            .delete()
+            .eq("id", job.id)
+            .eq("employer_id", user.id);
+
+        if (error) {
+            alert("Job deletion failed: " + error.message);
+            return;
+        }
+
+        alert("Job deleted successfully!");
+        manageJobsButton.click();
+    });
+
+    card.appendChild(title);
+    card.appendChild(details);
+    card.appendChild(statusButton);
+    card.appendChild(deleteButton);
+
+    jobsList.appendChild(card);
+});
+
 
         } catch (error) {
             jobsList.textContent = "Loading jobs failed: " + error.message;

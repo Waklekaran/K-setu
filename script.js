@@ -153,6 +153,56 @@ console.log("Employer signup error:", error);
 });
 console.log("Worker Form:", document.getElementById("workerForm"));
 console.log("Employer Form:", document.getElementById("employerForm"));
+
+// =====================================
+// KARANX - LOGIN SYSTEM
+// =====================================
+
+function showLogin() {
+    document.getElementById("mainScreen").hidden = true;
+    document.getElementById("registrationScreen").hidden = true;
+    document.getElementById("loginScreen").hidden = false;
+}
+
+document.getElementById("loginForm").addEventListener("submit", async function(event) {
+    event.preventDefault();
+
+    const email = document.getElementById("loginEmail").value.trim();
+    const password = document.getElementById("loginPassword").value;
+    const message = document.getElementById("loginMessage");
+
+    message.textContent = "Logging in...";
+
+    try {
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email: email,
+            password: password
+        });
+
+        if (error) {
+            message.textContent = error.message;
+            return;
+        }
+
+        const { data: profile, error: profileError } = await supabaseClient
+            .from("profiles")
+            .select("role, full_name")
+            .eq("id", data.user.id)
+            .single();
+
+        if (profileError) {
+            message.textContent = "Login successful, but profile could not be loaded.";
+            return;
+        }
+
+        message.textContent =
+            "Welcome " + profile.full_name + "! Logged in as " + profile.role + ".";
+
+    } catch (err) {
+        message.textContent = "Login failed: " + err.message;
+    }
+});
+
 console.log("Supabase Client:", supabaseClient);
 
 

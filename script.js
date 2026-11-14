@@ -76,7 +76,9 @@ const bio = document.getElementById("workerBio").value.trim();
     const { data, error } = await supabaseClient.auth.signUp({
         email: email,
         password: password,
-        options: {
+            options: {
+    emailRedirectTo: "https://waklekaran.github.io/K-setu/",
+    data: {
             data: {
                 role: "worker",
                 full_name: name,
@@ -121,6 +123,8 @@ document.getElementById("employerForm").addEventListener("submit", async functio
         email: email,
         password: password,
         options: {
+    emailRedirectTo: "https://waklekaran.github.io/K-setu/",
+    data: {
             data: {
                 role: "employer",
                 full_name: name,

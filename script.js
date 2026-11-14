@@ -1407,6 +1407,7 @@ async function loadEmployerWorkerVideos() {
     }
 }
 
+
 // =====================================
 // KARANX - VOICE SKILL INPUT
 // =====================================
@@ -1491,6 +1492,7 @@ if (saveVoiceSkillsButton) {
         alert("Voice text added! Review it, then click Save Skills.");
     });
 }
+
 
 
 

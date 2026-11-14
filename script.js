@@ -1065,6 +1065,106 @@ if (saveWorkerProfileButton) {
     });
 }
 
+const uploadWorkerVideoButton = document.getElementById(
+    "uploadWorkerVideoButton"
+);
+
+if (uploadWorkerVideoButton) {
+    uploadWorkerVideoButton.addEventListener("click", async function () {
+        const title = document.getElementById("workerVideoTitle").value.trim();
+        const description = document.getElementById(
+            "workerVideoDescription"
+        ).value.trim();
+
+        const fileInput = document.getElementById("workerVideoFile");
+        const file = fileInput.files[0];
+
+        const status = document.getElementById("workerVideoUploadStatus");
+
+        if (!title || !file) {
+            status.textContent = "Please enter a title and select a video.";
+            return;
+        }
+
+        if (file.type !== "video/mp4") {
+            status.textContent = "Please select an MP4 video.";
+            return;
+        }
+
+        if (file.size > 50 * 1024 * 1024) {
+            status.textContent = "Video size must be 50 MB or less.";
+            return;
+        }
+
+        try {
+            uploadWorkerVideoButton.disabled = true;
+            uploadWorkerVideoButton.textContent = "Uploading...";
+            status.textContent = "Please wait, uploading your video...";
+
+            const { data: { user }, error: userError } =
+                await supabaseClient.auth.getUser();
+
+            if (userError) throw userError;
+            if (!user) throw new Error("Please login again.");
+
+            const { data: profile, error: profileError } =
+                await supabaseClient
+                    .from("profiles")
+                    .select("role")
+                    .eq("id", user.id)
+                    .single();
+
+            if (profileError) throw profileError;
+            if (profile.role !== "worker") {
+                throw new Error("Only workers can upload work videos.");
+            }
+
+            const filePath =
+                user.id + "/" + crypto.randomUUID() + ".mp4";
+
+            const { error: uploadError } = await supabaseClient
+                .storage
+                .from("worker-work-videos")
+                .upload(filePath, file, {
+                    contentType: "video/mp4",
+                    upsert: false
+                });
+
+            if (uploadError) throw uploadError;
+
+            const { error: databaseError } = await supabaseClient
+                .from("worker_videos")
+                .insert({
+                    worker_id: user.id,
+                    title: title,
+                    description: description,
+                    storage_path: filePath
+                });
+
+            if (databaseError) {
+                await supabaseClient
+                    .storage
+                    .from("worker-work-videos")
+                    .remove([filePath]);
+
+                throw databaseError;
+            }
+
+            status.textContent = "Video uploaded successfully!";
+
+            document.getElementById("workerVideoTitle").value = "";
+            document.getElementById("workerVideoDescription").value = "";
+            fileInput.value = "";
+
+        } catch (error) {
+            status.textContent = "Upload failed: " + error.message;
+        } finally {
+            uploadWorkerVideoButton.disabled = false;
+            uploadWorkerVideoButton.textContent = "Upload Work Video";
+        }
+    });
+}
+
 
 
     

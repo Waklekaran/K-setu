@@ -649,6 +649,106 @@ if (postJobButton) {
 
 console.log("Supabase Client:", supabaseClient);
 
+// =====================================
+// KARANX - POST A JOB
+// =====================================
+
+const publishJobButton = document.getElementById("publishJobButton");
+
+if (publishJobButton) {
+    publishJobButton.addEventListener("click", async function () {
+
+        const title = document.getElementById("jobTitle").value.trim();
+        const description = document.getElementById("jobDescription").value.trim();
+        const skillsText = document.getElementById("jobSkills").value.trim();
+        const wage = Number(document.getElementById("jobWage").value);
+        const city = document.getElementById("jobCity").value.trim();
+        const vacancies = Number(document.getElementById("jobVacancies").value);
+        const duration = Number(document.getElementById("jobDuration").value);
+
+        if (!title || !description || !skillsText || !city) {
+            alert("Please fill all required fields!");
+            return;
+        }
+
+        if (!Number.isFinite(wage) || wage <= 0 ||
+            !Number.isInteger(vacancies) || vacancies <= 0 ||
+            !Number.isInteger(duration) || duration <= 0) {
+            alert("Please enter valid wage, vacancies and duration!");
+            return;
+        }
+
+        const requiredSkills = skillsText
+            .split(",")
+            .map(skill => skill.trim())
+            .filter(skill => skill.length > 0);
+
+        if (requiredSkills.length === 0) {
+            alert("Please enter at least one skill!");
+            return;
+        }
+
+        try {
+            publishJobButton.disabled = true;
+            publishJobButton.textContent = "Publishing...";
+
+            const { data: { user }, error: userError } =
+                await supabaseClient.auth.getUser();
+
+            if (userError || !user) {
+                throw new Error("Please login again.");
+            }
+
+            const { data: profile, error: profileError } =
+                await supabaseClient
+                    .from("profiles")
+                    .select("role")
+                    .eq("id", user.id)
+                    .single();
+
+            if (profileError) throw profileError;
+
+            if (profile.role !== "employer") {
+                throw new Error("Only employers can post jobs.");
+            }
+
+            const { error } = await supabaseClient
+                .from("jobs")
+                .insert({
+                    employer_id: user.id,
+                    title: title,
+                    description: description,
+                    required_skills: requiredSkills,
+                    daily_wage: wage,
+                    city: city,
+                    vacancies: vacancies,
+                    duration_days: duration,
+                    status: "active"
+                });
+
+            if (error) throw error;
+
+            alert("Job Published Successfully!");
+
+            document.getElementById("jobTitle").value = "";
+            document.getElementById("jobDescription").value = "";
+            document.getElementById("jobSkills").value = "";
+            document.getElementById("jobWage").value = "";
+            document.getElementById("jobCity").value = "";
+            document.getElementById("jobVacancies").value = "";
+            document.getElementById("jobDuration").value = "";
+
+            document.getElementById("postJobSection").hidden = true;
+
+        } catch (error) {
+            alert("Job publishing failed: " + error.message);
+        } finally {
+            publishJobButton.disabled = false;
+            publishJobButton.textContent = "Publish Job";
+        }
+    });
+}
+
 
 
     

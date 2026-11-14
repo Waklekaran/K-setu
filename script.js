@@ -295,6 +295,58 @@ document.getElementById("loginMessage").textContent = "";
     });
 }
 
+// =====================================
+// KARANX - AUTO DASHBOARD AFTER CONFIRMATION
+// =====================================
+
+async function openDashboardFromExistingSession() {
+
+    try {
+        const { data, error } =
+            await supabaseClient.auth.getSession();
+
+        if (error) throw error;
+
+        const session = data.session;
+
+        // No active session: keep Home screen
+        if (!session) return;
+
+        // Load user's role and name
+        const { data: profile, error: profileError } =
+            await supabaseClient
+                .from("profiles")
+                .select("role, full_name")
+                .eq("id", session.user.id)
+                .single();
+
+        if (profileError) throw profileError;
+
+        // Open Dashboard
+        document.getElementById("mainScreen").hidden = true;
+        document.getElementById("registrationScreen").hidden = true;
+        document.getElementById("loginScreen").hidden = true;
+
+        document.getElementById("dashboardScreen").hidden = false;
+
+        document.getElementById("workerDashboard").hidden =
+            profile.role !== "worker";
+
+        document.getElementById("employerDashboard").hidden =
+            profile.role !== "employer";
+
+        document.getElementById("dashboardWelcome").textContent =
+            "Welcome, " + profile.full_name + "!";
+
+        window.scrollTo(0, 0);
+
+    } catch (err) {
+        console.error("Automatic dashboard error:", err.message);
+    }
+}
+
+openDashboardFromExistingSession();
+
 console.log("Supabase Client:", supabaseClient);
 
 

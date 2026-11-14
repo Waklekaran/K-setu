@@ -161,17 +161,7 @@ document.getElementById("employerForm").addEventListener("submit", async functio
 });
 
 
-    if (error) {
-        message.textContent = error.message;
-        return;
-    }
-
-    if (data.session) {
-        message.textContent = "Employer account created successfully!";
-    } else {
-        message.textContent = "Registration received! Please check your email to confirm your account.";
-    }
-});
+    
 console.log("Worker Form:", document.getElementById("workerForm"));
 console.log("Employer Form:", document.getElementById("employerForm"));
 

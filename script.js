@@ -90,6 +90,8 @@ bio: bio
             }
         }
     });
+    console.log("Worker signup data:", data);
+console.log("Worker signup error:", error);
 
     if (error) {
         message.textContent = error.message;

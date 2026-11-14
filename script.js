@@ -807,6 +807,30 @@ jobs.forEach(function (job) {
     details.style.whiteSpace = "pre-line";
 
     const statusButton = document.createElement("button");
+    
+const editButton = document.createElement("button");
+editButton.textContent = "Edit Job";
+
+editButton.addEventListener("click", function () {
+    document.getElementById("editJobSection").hidden = false;
+
+    document.getElementById("editJobId").value = job.id;
+    document.getElementById("editJobTitle").value = job.title;
+    document.getElementById("editJobDescription").value = job.description;
+    document.getElementById("editJobSkills").value =
+        (job.required_skills || []).join(", ");
+    document.getElementById("editJobWage").value = job.daily_wage;
+    document.getElementById("editJobCity").value = job.city;
+    document.getElementById("editJobVacancies").value = job.vacancies;
+    document.getElementById("editJobDuration").value = job.duration_days;
+
+    document.getElementById("editJobSection").scrollIntoView({
+        behavior: "smooth"
+    });
+});
+
+card.appendChild(editButton);
+
     statusButton.textContent =
         job.status === "active" ? "Close Job" : "Reopen Job";
 

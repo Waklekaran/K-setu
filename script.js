@@ -1457,22 +1457,23 @@ workerRecognition.onresult = function (event) {
 };
 
 
+ workerRecognition.onresult = function (event) {
+     
 workerRecognition.onresult = function (event) {
-    let newText = "";
+    let finalText = "";
 
-    for (let i = event.resultIndex; i < event.results.length; i++) {
+    for (let i = 0; i < event.results.length; i++) {
         if (event.results[i].isFinal) {
-            newText += event.results[i][0].transcript + " ";
+            finalText += event.results[i][0].transcript + " ";
         }
     }
 
-    if (newText.trim()) {
-        voiceFinalTranscript =
-            (voiceFinalTranscript + " " + newText).trim();
-
-        voiceTranscript.value = voiceFinalTranscript;
-    }
+    voiceTranscript.value = finalText.trim();
 };
+
+     
+
+    
 
             
             

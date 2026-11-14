@@ -64,6 +64,10 @@ document.getElementById("workerForm").addEventListener("submit", async function(
     const password = document.getElementById("workerPassword").value;
     const city = document.getElementById("workerCity").value.trim();
     const skills = document.getElementById("workerSkills").value.trim();
+    const experience = Number(document.getElementById("workerExperience").value);
+const wage = Number(document.getElementById("workerWage").value);
+const availability = document.getElementById("workerAvailability").value;
+const bio = document.getElementById("workerBio").value.trim();
 
     const message = document.getElementById("registrationMessage");
 
@@ -77,7 +81,11 @@ document.getElementById("workerForm").addEventListener("submit", async function(
                 role: "worker",
                 full_name: name,
                 city: city,
-                skills: skills
+                skills: skills,
+experience_years: experience,
+expected_daily_wage: wage,
+availability: availability,
+bio: bio
             }
         }
     });

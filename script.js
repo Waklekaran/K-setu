@@ -124,6 +124,8 @@ document.getElementById("registrationMessage").textContent =
     message.textContent = "Creating your employer account...";
 
     const { data, error } = await supabaseClient.auth.signUp({
+        console.log("Employer signup data:", data);
+console.log("Employer signup error:", error);
         email: email,
         password: password,
         options: {

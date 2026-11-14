@@ -549,6 +549,37 @@ window.scrollTo(0, 0);
     </div>
 </div>
 
+<div id="editJobSection" hidden>
+    <h3>Edit Job Details</h3>
+
+    <input type="hidden" id="editJobId">
+
+    <label>Job Title</label>
+    <input type="text" id="editJobTitle" required>
+
+    <label>Job Description</label>
+    <textarea id="editJobDescription" required></textarea>
+
+    <label>Required Skills</label>
+    <input type="text" id="editJobSkills" required>
+
+    <label>Daily Wage (₹)</label>
+    <input type="number" id="editJobWage" min="1" required>
+
+    <label>City</label>
+    <input type="text" id="editJobCity" required>
+
+    <label>Vacancies</label>
+    <input type="number" id="editJobVacancies" min="1" required>
+
+    <label>Duration (Days)</label>
+    <input type="number" id="editJobDuration" min="1" required>
+
+    <button type="button" id="saveEditedJobButton">
+        Save Changes
+    </button>
+</div>
+
 </div>
 
 

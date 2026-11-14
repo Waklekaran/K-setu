@@ -422,17 +422,58 @@ window.scrollTo(0, 0);
     </button>
 </div>
 
-<div id="addWorkerSkillsSection" hidden>
-    <h3>Add My Skills</h3>
 
-    <label>Enter Skills (comma separated)</label>
-    <textarea id="workerSkillsInput"
-        placeholder="e.g. Electrician, Plumbing, Painting"></textarea>
+<div id="addWorkerSkillsSection" hidden>
+    <h3>My Skills & Work Portfolio</h3>
+
+    <h4>Add Your Skills</h4>
+
+    <label for="workerSkillsInput">
+        Enter Your Skills (comma separated)
+    </label>
+
+    <textarea
+        id="workerSkillsInput"
+        placeholder="e.g. Electrician, Plumbing, Painting, Welding">
+    </textarea>
 
     <button type="button" id="saveWorkerSkillsButton">
         Save Skills
     </button>
+
+    <hr>
+
+    <h4>Upload Your Work Video</h4>
+
+    <p>Apne kaam ka video upload karo, taaki employers tumhara work dekh sakein.</p>
+
+    <label for="workerVideoTitle">Video Title</label>
+    <input
+        type="text"
+        id="workerVideoTitle"
+        placeholder="e.g. My Electrical Installation Work">
+
+    <label for="workerVideoDescription">Video Description</label>
+    <textarea
+        id="workerVideoDescription"
+        placeholder="Describe the work shown in your video">
+    </textarea>
+
+    <label for="workerVideoFile">Select Work Video</label>
+    <input
+        type="file"
+        id="workerVideoFile"
+        accept="video/*">
+
+    <p id="workerVideoFileName"></p>
+
+    <button type="button" id="uploadWorkerVideoButton">
+        Upload Work Video
+    </button>
+
+    <p id="workerVideoUploadStatus"></p>
 </div>
+
 
 </div>
 

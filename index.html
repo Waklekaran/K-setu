@@ -179,9 +179,10 @@ document.getElementById('loginScreen').hidden = false;
 
             <button type="button"
 onclick="
-document.getElementById('loginScreen').hidden = true;
 document.getElementById('registrationScreen').hidden = true;
 document.getElementById('mainScreen').hidden = false;
+document.getElementById('workerForm').hidden = true;
+document.getElementById('employerForm').hidden = true;
 window.scrollTo(0, 0);
 ">
     Back
@@ -244,7 +245,13 @@ Create Worker Account
         <form id="employerForm" class="registration-form" hidden>
 
             <button type="button"
-onclick="alert('Back button working!')">
+onclick="
+document.getElementById('registrationScreen').hidden = true;
+document.getElementById('mainScreen').hidden = false;
+document.getElementById('workerForm').hidden = true;
+document.getElementById('employerForm').hidden = true;
+window.scrollTo(0, 0);
+">
     Back
             </button>
 
@@ -314,9 +321,14 @@ onclick="alert('Back button working!')">
 
         </form>
 
-        <button type="button" onclick="showRoleSelection()">
-            Back
-        </button>
+       <button type="button"
+onclick="
+document.getElementById('loginScreen').hidden = true;
+document.getElementById('mainScreen').hidden = false;
+window.scrollTo(0, 0);
+">
+    Back
+       </button> 
 
     </div>
 </section>

@@ -749,6 +749,73 @@ if (publishJobButton) {
     });
 }
 
+// =====================================
+// KARANX - MANAGE EMPLOYER JOBS
+// =====================================
+
+const manageJobsButton = document.getElementById("manageJobsButton");
+
+if (manageJobsButton) {
+    manageJobsButton.addEventListener("click", async function () {
+
+        const section = document.getElementById("manageJobsSection");
+        const jobsList = document.getElementById("myJobsList");
+
+        section.hidden = false;
+        jobsList.textContent = "Loading your jobs...";
+
+        try {
+            const { data: { user }, error: userError } =
+                await supabaseClient.auth.getUser();
+
+            if (userError) throw userError;
+            if (!user) throw new Error("Please login again.");
+
+            const { data: jobs, error } = await supabaseClient
+                .from("jobs")
+                .select("id, title, description, required_skills, daily_wage, city, vacancies, duration_days, status, created_at")
+                .eq("employer_id", user.id)
+                .order("created_at", { ascending: false });
+
+            if (error) throw error;
+
+            jobsList.replaceChildren();
+
+            if (!jobs || jobs.length === 0) {
+                jobsList.textContent = "You have not posted any jobs yet.";
+                return;
+            }
+
+            jobs.forEach(function (job) {
+                const card = document.createElement("div");
+                card.className = "job-card";
+
+                const title = document.createElement("h4");
+                title.textContent = job.title;
+
+                const details = document.createElement("p");
+                details.textContent =
+                    "Description: " + job.description +
+                    "\nSkills: " + (job.required_skills || []).join(", ") +
+                    "\nDaily Wage: ₹" + job.daily_wage +
+                    "\nCity: " + job.city +
+                    "\nVacancies: " + job.vacancies +
+                    "\nDuration: " + job.duration_days + " days" +
+                    "\nStatus: " + job.status;
+
+                details.style.whiteSpace = "pre-line";
+
+                card.appendChild(title);
+                card.appendChild(details);
+                jobsList.appendChild(card);
+            });
+
+        } catch (error) {
+            jobsList.textContent = "Loading jobs failed: " + error.message;
+        }
+    });
+}
+
 
 
     

@@ -1443,19 +1443,36 @@ if (startVoiceButton && stopVoiceButton) {
         };
 
         workerRecognition.onresult = function (event) {
-            let finalText = "";
+            
+let voiceFinalTranscript = "";
 
-            for (let i = 0; i < event.results.length; i++) {
-                if (event.results[i].isFinal) {
-                    finalText += event.results[i][0].transcript + " ";
-                }
-            }
+workerRecognition.onstart = function () {
+    voiceFinalTranscript = voiceTranscript.value.trim();
+    voiceStatus.textContent = "Listening... Speak now.";
+};
 
-            if (finalText.trim()) {
-                voiceTranscript.value =
-                    (voiceTranscript.value + " " + finalText).trim();
-            }
-        };
+workerRecognition.onresult = function (event) {
+    let newText = "";
+
+    for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) {
+            newText += event.results[i][0].transcript + " ";
+        }
+    }
+
+    if (newText.trim()) {
+        voiceFinalTranscript =
+            (voiceFinalTranscript + " " + newText).trim();
+
+        voiceTranscript.value = voiceFinalTranscript;
+    }
+};
+
+            
+            
+            
+
+            
 
         workerRecognition.onerror = function (event) {
             voiceStatus.textContent =

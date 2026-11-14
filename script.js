@@ -197,6 +197,7 @@ function showLogin() {
     login.hidden = false;
 }
 
+
 document.getElementById("loginForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 
@@ -213,9 +214,11 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         });
 
         if (error) {
-            message.textContent = error.message;
+            message.textContent = "Login failed: " + error.message;
             return;
         }
+
+        message.textContent = "Login successful! Welcome to KaranX.";
 
         const { data: profile, error: profileError } = await supabaseClient
             .from("profiles")
@@ -224,17 +227,21 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
             .single();
 
         if (profileError) {
-            message.textContent = "Login successful, but profile could not be loaded.";
+            message.textContent += " Profile details could not be loaded.";
             return;
         }
 
         message.textContent =
-            "Welcome " + profile.full_name + "! Logged in as " + profile.role + ".";
+            "Login successful! Welcome " +
+            profile.full_name +
+            ". You are logged in as " +
+            profile.role + ".";
 
     } catch (err) {
         message.textContent = "Login failed: " + err.message;
     }
 });
+
 
 console.log("Supabase Client:", supabaseClient);
 

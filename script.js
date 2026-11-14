@@ -1,4 +1,4 @@
-q
+
 // =====================================
 // KARANX - SUPABASE CONFIGURATION
 // =====================================
@@ -106,7 +106,7 @@ bio: bio
 // Employer registration
 document.getElementById("employerForm").addEventListener("submit", async function(event) {
     event.preventDefault();
-
+document.getElementById("registrationMessage").textContent = "FORM SUBMITTED - Processing...";
     const name = document.getElementById("employerName").value.trim();
     const email = document.getElementById("employerEmail").value.trim();
     const password = document.getElementById("employerPassword").value;

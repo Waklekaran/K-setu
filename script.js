@@ -221,11 +221,32 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
             return;
         }
 
-        message.textContent =
-            "Login successful! Welcome " +
-            profile.full_name +
-            ". You are logged in as " +
-            profile.role + ".";
+        
+message.textContent =
+    "Login successful! Welcome " +
+    profile.full_name +
+    ". You are logged in as " +
+    profile.role + ".";
+
+// Open Dashboard
+document.getElementById("loginScreen").hidden = true;
+document.getElementById("mainScreen").hidden = true;
+document.getElementById("registrationScreen").hidden = true;
+
+document.getElementById("dashboardScreen").hidden = false;
+
+// Show correct dashboard according to role
+document.getElementById("workerDashboard").hidden =
+    profile.role !== "worker";
+
+document.getElementById("employerDashboard").hidden =
+    profile.role !== "employer";
+
+document.getElementById("dashboardWelcome").textContent =
+    "Welcome, " + profile.full_name + "!";
+    
+window.scrollTo(0, 0);
+
 
     } catch (err) {
         message.textContent = "Login failed: " + err.message;

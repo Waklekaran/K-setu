@@ -136,20 +136,40 @@
                     onclick="showRegistration('employer')">
                     Register as Employer
                 </button>
-            </article>
+            </article>       
 
+    </div>
+</section>
+
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <h2>KaranX</h2>
+            <p>Connecting Skills With Opportunities.</p>
+            <p>© 2026 KaranX. All rights reserved.</p>
         </div>
+    </footer>
+</div>
 
-        <!-- Worker Registration Form -->
+<!-- SEPARATE REGISTRATION SCREEN -->
+
+<section id="registrationScreen" hidden>
+
+    <div class="registration-container">
+
+        <!-- Worker Registration -->
 
         <form id="workerForm" class="registration-form" hidden>
 
-            <h2>Worker Registration</h2>
-            <button type="button"
-    class="back-button"
-    onclick="showRoleSelection()">
-    ← Back
+            <button type="button" class="back-button"
+                onclick="showRoleSelection()">
+                ← Back
             </button>
+
+            <h2>Worker Registration</h2>
 
             <input type="text" id="workerName"
                 placeholder="Full Name" required>
@@ -174,16 +194,16 @@
 
         </form>
 
-        <!-- Employer Registration Form -->
+        <!-- Employer Registration -->
 
         <form id="employerForm" class="registration-form" hidden>
 
-            <h2>Employer Registration</h2>
-            <button type="button"
-    class="back-button"
-    onclick="showRoleSelection()">
-    ← Back
+            <button type="button" class="back-button"
+                onclick="showRoleSelection()">
+                ← Back
             </button>
+
+            <h2>Employer Registration</h2>
 
             <input type="text" id="employerName"
                 placeholder="Your Full Name" required>
@@ -213,20 +233,8 @@
         <p id="registrationMessage" role="status"></p>
 
     </div>
+
 </section>
-
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <h2>KaranX</h2>
-            <p>Connecting Skills With Opportunities.</p>
-            <p>© 2026 KaranX. All rights reserved.</p>
-        </div>
-    </footer>
-</div>
 
 </body>
 </html>

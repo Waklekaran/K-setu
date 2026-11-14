@@ -111,7 +111,7 @@ console.log("Worker signup error:", error);
 document.getElementById("employerForm").addEventListener("submit", async function(event) {
     event.preventDefault();
 document.getElementById("registrationMessage").textContent =
-    "WORKER FORM SUBMITTED!";
+    "EMPLOYER FORM SUBMITTED!";
     const name = document.getElementById("employerName").value.trim();
     const email = document.getElementById("employerEmail").value.trim();
     const password = document.getElementById("employerPassword").value;

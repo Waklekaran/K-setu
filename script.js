@@ -252,7 +252,41 @@ window.scrollTo(0, 0);
         message.textContent = "Login failed: " + err.message;
     }
 });
+// =====================================
+// KARANX - LOGOUT SYSTEM
+// =====================================
 
+const logoutButton = document.getElementById("logoutButton");
+
+if (logoutButton) {
+    logoutButton.addEventListener("click", async function () {
+
+        logoutButton.disabled = true;
+
+        try {
+            const { error } = await supabaseClient.auth.signOut();
+
+            if (error) {
+                throw error;
+            }
+
+            document.getElementById("dashboardScreen").hidden = true;
+            document.getElementById("workerDashboard").hidden = true;
+            document.getElementById("employerDashboard").hidden = true;
+
+            document.getElementById("loginScreen").hidden = true;
+            document.getElementById("registrationScreen").hidden = true;
+            document.getElementById("mainScreen").hidden = false;
+
+            window.scrollTo(0, 0);
+
+        } catch (err) {
+            alert("Logout failed: " + err.message);
+        } finally {
+            logoutButton.disabled = false;
+        }
+    });
+}
 
 console.log("Supabase Client:", supabaseClient);
 

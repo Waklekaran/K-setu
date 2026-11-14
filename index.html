@@ -122,7 +122,13 @@
                 <button
                     type="button" 
                     class="primary-button"
-                    onclick="showRegistration('worker')">
+                    onclick="
+document.getElementById('mainScreen').hidden = true;
+document.getElementById('registrationScreen').hidden = false;
+document.getElementById('workerForm').hidden = false;
+document.getElementById('employerForm').hidden = true;
+window.scrollTo(0, 0);
+">
     Register as Worker
                 </button>
             </article>
@@ -246,10 +252,10 @@ Create Worker Account
 
             <button type="button"
 onclick="
-document.getElementById('registrationScreen').hidden = true;
-document.getElementById('mainScreen').hidden = false;
+document.getElementById('mainScreen').hidden = true;
+document.getElementById('registrationScreen').hidden = false;
 document.getElementById('workerForm').hidden = true;
-document.getElementById('employerForm').hidden = true;
+document.getElementById('employerForm').hidden = false;
 window.scrollTo(0, 0);
 ">
     Back

@@ -438,10 +438,67 @@ window.scrollTo(0, 0);
 
 
     <!-- Employer Dashboard -->
-    <div id="employerDashboard" hidden>
-        <h3>Employer Dashboard</h3>
-        <p>Find skilled workers for your business.</p>
+    
+<div id="employerDashboard" hidden>
+    <h3>Employer Dashboard</h3>
+    <p>Find skilled workers for your business.</p>
+
+    <div class="employer-feature">
+        <h3>My Business Profile</h3>
+        <p>View your business information.</p>
+        <button type="button" id="viewBusinessButton">
+            View Business Profile
+        </button>
     </div>
+
+    <div class="employer-feature">
+        <h3>Edit Business Profile</h3>
+        <p>Update your business details.</p>
+        <button type="button" id="editBusinessButton">
+            Edit Business Profile
+        </button>
+    </div>
+
+    <div class="employer-feature">
+        <h3>Post a Job</h3>
+        <p>Publish a job and find skilled workers.</p>
+        <button type="button" id="postJobButton">
+            Post a Job
+        </button>
+    </div>
+
+    <div id="businessProfileSection" hidden>
+        <h3>Business Profile Details</h3>
+        <div id="businessProfileDetails"></div>
+    </div>
+
+    <div id="editBusinessSection" hidden>
+        <h3>Edit Business Profile</h3>
+
+        <label>Business Name</label>
+        <input type="text" id="editBusinessName" placeholder="Business name">
+
+        <label>Business Type</label>
+        <input type="text" id="editBusinessType" placeholder="Business type">
+
+        <label>City</label>
+        <input type="text" id="editBusinessCity" placeholder="City">
+
+        <label>Description</label>
+        <textarea id="editBusinessDescription"
+            placeholder="Describe your business"></textarea>
+
+        <button type="button" id="saveBusinessButton">
+            Save Business Profile
+        </button>
+    </div>
+
+    <div id="postJobSection" hidden>
+        <h3>Post a New Job</h3>
+        <p>Job posting form will be added next.</p>
+    </div>
+</div>
+
 
     <button type="button" id="logoutButton">
         Logout

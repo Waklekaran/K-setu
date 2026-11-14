@@ -1,4 +1,4 @@
-
+q
 // =====================================
 // KARANX - SUPABASE CONFIGURATION
 // =====================================
@@ -78,7 +78,6 @@ const bio = document.getElementById("workerBio").value.trim();
         password: password,
             options: {
     emailRedirectTo: "https://waklekaran.github.io/K-setu/",
-    data: {
             data: {
                 role: "worker",
                 full_name: name,
@@ -124,7 +123,6 @@ document.getElementById("employerForm").addEventListener("submit", async functio
         password: password,
         options: {
     emailRedirectTo: "https://waklekaran.github.io/K-setu/",
-    data: {
             data: {
                 role: "employer",
                 full_name: name,

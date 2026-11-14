@@ -362,10 +362,41 @@ window.scrollTo(0, 0);
     </h2>
 
     <!-- Worker Dashboard -->
-    <div id="workerDashboard" hidden>
-        <h3>Worker Dashboard</h3>
-        <p>Find jobs that match your skills.</p>
+    
+<div id="workerDashboard" hidden>
+    <h3>Worker Dashboard</h3>
+    <p>Find jobs that match your skills.</p>
+
+    <div class="worker-feature">
+        <h3>My Profile</h3>
+        <p>View your personal and professional details.</p>
+        <button type="button" id="viewProfileButton">
+            View My Profile
+        </button>
     </div>
+
+    <div class="worker-feature">
+        <h3>Edit Profile</h3>
+        <p>Update your name, city and experience.</p>
+        <button type="button" id="editProfileButton">
+            Edit Profile
+        </button>
+    </div>
+
+    <div class="worker-feature">
+        <h3>My Skills</h3>
+        <p>Add skills to find suitable jobs.</p>
+        <button type="button" id="addSkillsButton">
+            Add Skills
+        </button>
+    </div>
+
+    <div id="workerProfileSection" hidden>
+        <h3>My Profile Details</h3>
+        <div id="workerProfileDetails"></div>
+    </div>
+</div>
+
 
     <!-- Employer Dashboard -->
     <div id="employerDashboard" hidden>

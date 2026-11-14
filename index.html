@@ -395,6 +395,45 @@ window.scrollTo(0, 0);
         <h3>My Profile Details</h3>
         <div id="workerProfileDetails"></div>
     </div>
+    
+<div id="editWorkerProfileSection" hidden>
+    <h3>Edit My Profile</h3>
+
+    <label>Full Name</label>
+    <input type="text" id="editWorkerName" placeholder="Enter name">
+
+    <label>City</label>
+    <input type="text" id="editWorkerCity" placeholder="Enter city">
+
+    <label>Experience (Years)</label>
+    <input type="number" id="editWorkerExperience" min="0" placeholder="Experience">
+
+    <label>Expected Daily Wage (₹)</label>
+    <input type="number" id="editWorkerWage" min="0" placeholder="Daily wage">
+
+    <label>Availability</label>
+    <input type="text" id="editWorkerAvailability" placeholder="e.g. Available">
+
+    <label>About</label>
+    <textarea id="editWorkerBio" placeholder="About yourself"></textarea>
+
+    <button type="button" id="saveWorkerProfileButton">
+        Save Profile
+    </button>
+</div>
+
+<div id="addWorkerSkillsSection" hidden>
+    <h3>Add My Skills</h3>
+
+    <label>Enter Skills (comma separated)</label>
+    <textarea id="workerSkillsInput"
+        placeholder="e.g. Electrician, Plumbing, Painting"></textarea>
+
+    <button type="button" id="saveWorkerSkillsButton">
+        Save Skills
+    </button>
+</div>
+
 </div>
 
 

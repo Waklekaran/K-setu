@@ -58,6 +58,8 @@ function showRoleSelection() {
 // Worker registration
 document.getElementById("workerForm").addEventListener("submit", async function(event) {
     event.preventDefault();
+    document.getElementById("registrationMessage").textContent =
+    "WORKER FORM SUBMITTED!";
 
     const name = document.getElementById("workerName").value.trim();
     const email = document.getElementById("workerEmail").value.trim();

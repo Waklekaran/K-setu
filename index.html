@@ -177,9 +177,14 @@ document.getElementById('loginScreen').hidden = false;
 
         <form id="workerForm" class="registration-form" hidden>
 
-            <button type="button" class="back-button"
-                onclick="showRoleSelection()">
-                ← Back
+            <button type="button"
+onclick="
+document.getElementById('loginScreen').hidden = true;
+document.getElementById('registrationScreen').hidden = true;
+document.getElementById('mainScreen').hidden = false;
+window.scrollTo(0, 0);
+">
+    Back
             </button>
 
             <h2>Worker Registration</h2>

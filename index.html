@@ -443,31 +443,51 @@ window.scrollTo(0, 0);
     
 <hr>
 
-<h3>🎤 Explain Your Skills by Voice</h3>
 
-<label for="workerVoiceLanguage">Choose Language:</label>
+<hr>
+
+<h3>🎤 Explain Your Skills by Voice
+    (अपना काम बोलकर बताएं / आपले काम बोलून सांगा)
+</h3>
+
+<label for="workerVoiceLanguage">
+    भाषा चुनें / भाषा निवडा:
+</label>
 
 <select id="workerVoiceLanguage">
-    <option value="hi-IN">Hindi</option>
-    <option value="mr-IN">Marathi</option>
+    <option value="hi-IN">हिंदी</option>
+    <option value="mr-IN">मराठी</option>
     <option value="en-IN">English</option>
 </select>
 
 <button type="button" id="startVoiceButton">
-    Start Speaking
+    🎤 Start Recording (बोलना शुरू करें / बोलायला सुरुवात करा)
 </button>
+
+<p>
+    अपना काम और अनुभव बोलकर बताएं।
+    <br>
+    तुमचे काम आणि अनुभव बोलून सांगा.
+</p>
 
 <button type="button" id="stopVoiceButton">
-    Stop Recording
+    ⏹ Stop Recording (बोलना बंद करें / बोलणे थांबवा)
 </button>
 
-<p id="voiceStatus">Ready to record.</p>
+<p id="voiceStatus">
+    Ready / तैयार / तयार
+</p>
 
 <textarea
     id="workerVoiceTranscript"
-    placeholder="Your spoken words will appear here..."
+    placeholder="आपने जो बोला, वह यहाँ दिखाई देगा / तुम्ही जे बोललात ते येथे दिसेल"
     rows="4">
 </textarea>
+
+<button type="button" id="saveVoiceSkillsButton">
+    Save Skills (कौशल सेव करें / कौशल्य जतन करा)
+</button>
+
 
 <button type="button" id="saveVoiceSkillsButton">
     Save Voice Skills

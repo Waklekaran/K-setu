@@ -1221,6 +1221,85 @@ if (saveWorkerSkillsButton) {
     });
 }
 
+// =====================================
+// WORKER VIDEO PORTFOLIO - LOAD VIDEOS
+// =====================================
+
+const refreshWorkerVideosButton = document.getElementById("refreshWorkerVideosButton");
+
+if (refreshWorkerVideosButton) {
+    refreshWorkerVideosButton.addEventListener("click", loadWorkerVideos);
+}
+
+async function loadWorkerVideos() {
+    const list = document.getElementById("workerVideosList");
+
+    if (!list) return;
+
+    list.textContent = "Loading your videos...";
+
+    try {
+        const { data: { user }, error: authError } =
+            await supabaseClient.auth.getUser();
+
+        if (authError || !user) {
+            throw new Error("Please login again.");
+        }
+
+        const { data: videos, error } = await supabaseClient
+            .from("worker_videos")
+            .select("id, title, description, storage_path, created_at")
+            .eq("worker_id", user.id)
+            .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        list.replaceChildren();
+
+        if (!videos || videos.length === 0) {
+            list.textContent = "No videos uploaded yet.";
+            return;
+        }
+
+        for (const item of videos) {
+            const card = document.createElement("div");
+
+            const title = document.createElement("h4");
+            title.textContent = item.title || "Work Video";
+
+            const description = document.createElement("p");
+            description.textContent = item.description || "No description";
+
+            const { data: signedData, error: signedError } =
+                await supabaseClient.storage
+                    .from("worker-work-videos")
+                    .createSignedUrl(item.storage_path, 3600);
+
+            card.append(title, description);
+
+            if (signedError || !signedData?.signedUrl) {
+                const message = document.createElement("p");
+                message.textContent = "Video access unavailable.";
+                card.append(message);
+            } else {
+                const video = document.createElement("video");
+                video.src = signedData.signedUrl;
+                video.controls = true;
+                video.preload = "metadata";
+                video.style.width = "100%";
+                video.style.maxWidth = "400px";
+                card.append(video);
+            }
+
+            list.append(card);
+        }
+
+    } catch (error) {
+        console.error("Video loading error:", error);
+        list.textContent = "Could not load videos: " + error.message;
+    }
+}
+
 
 
 

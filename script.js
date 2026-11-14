@@ -1407,10 +1407,9 @@ async function loadEmployerWorkerVideos() {
     }
 }
 
-
-// =====================================
-// KARANX - VOICE SKILL INPUT
-// =====================================
+ // =====================================
+ // KARANX - VOICE SKILL INPUT
+ // =====================================
 
 const SpeechRecognition =
     window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -1425,83 +1424,73 @@ const voiceTranscript = document.getElementById("workerVoiceTranscript");
 const saveVoiceSkillsButton = document.getElementById("saveVoiceSkillsButton");
 const workerSkillsInput = document.getElementById("workerSkillsInput");
 
-if (startVoiceButton && stopVoiceButton) {
+if (startVoiceButton && stopVoiceButton && voiceStatus && voiceTranscript) {
 
     if (!SpeechRecognition) {
-        voiceStatus.textContent =
-            "Voice recognition is not supported in this browser. Try Chrome.";
+        voiceStatus.textContent = "Please use Chrome for voice recording.";
         startVoiceButton.disabled = true;
     } else {
 
         workerRecognition = new SpeechRecognition();
-
         workerRecognition.continuous = true;
         workerRecognition.interimResults = true;
 
+        let finalTranscript = "";
+
         workerRecognition.onstart = function () {
-            voiceStatus.textContent = "Listening... Speak now.";
+            finalTranscript = "";
+            voiceTranscript.value = "";
+            voiceStatus.textContent = "Listening... बोलना शुरू करें...";
         };
 
         workerRecognition.onresult = function (event) {
-        
-workerRecognition.onresult = function (event) {
-    let finalText = "";
+            let interimTranscript = "";
 
-    for (let i = 0; i < event.results.length; i++) {
-        if (event.results[i].isFinal) {
-            finalText += event.results[i][0].transcript + " ";
-        }
-    }
+            for (let i = 0; i < event.results.length; i++) {
+                const text = event.results[i][0].transcript;
 
-    voiceTranscript.value = finalText.trim();
-};
+                if (event.results[i].isFinal) {
+                    finalTranscript += text + " ";
+                } else {
+                    interimTranscript += text;
+                }
+            }
 
-
- workerRecognition.onresult = function (event) {
-     
-workerRecognition.onresult = function (event) {
-    let finalText = "";
-
-    for (let i = 0; i < event.results.length; i++) {
-        if (event.results[i].isFinal) {
-            finalText += event.results[i][0].transcript + " ";
-        }
-    }
-
-    voiceTranscript.value = finalText.trim();
-};
-
-     
-
-    
-
-            
-            
-            
-
-            
+            voiceTranscript.value =
+                (finalTranscript + interimTranscript).trim();
+        };
 
         workerRecognition.onerror = function (event) {
-            voiceStatus.textContent =
-                "Voice error: " + event.error;
+            voiceStatus.textContent = "Voice error: " + event.error;
         };
 
         workerRecognition.onend = function () {
-            voiceStatus.textContent = "Recording stopped.";
+            voiceStatus.textContent = "Recording stopped / रिकॉर्डिंग बंद";
+            startVoiceButton.disabled = false;
+            stopVoiceButton.disabled = true;
         };
 
         startVoiceButton.addEventListener("click", function () {
-            workerRecognition.lang = voiceLanguage.value;
-            workerRecognition.start();
+            try {
+                workerRecognition.lang = voiceLanguage.value;
+                startVoiceButton.disabled = true;
+                stopVoiceButton.disabled = false;
+                workerRecognition.start();
+            } catch (error) {
+                voiceStatus.textContent = "Please try again: " + error.message;
+                startVoiceButton.disabled = false;
+                stopVoiceButton.disabled = true;
+            }
         });
 
         stopVoiceButton.addEventListener("click", function () {
-            workerRecognition.stop();
+            if (workerRecognition) {
+                workerRecognition.stop();
+            }
         });
     }
 }
 
-// Put voice transcript into skills box for review
 if (saveVoiceSkillsButton) {
     saveVoiceSkillsButton.addEventListener("click", function () {
         const spokenText = voiceTranscript.value.trim();
@@ -1512,10 +1501,10 @@ if (saveVoiceSkillsButton) {
         }
 
         workerSkillsInput.value = spokenText;
-
         alert("Voice text added! Review it, then click Save Skills.");
     });
 }
+
 
 
 

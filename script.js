@@ -1858,6 +1858,41 @@ if (nearbyJobIds.length > 0) {
 
     return;
 }
+            // =====================================
+// WORKER SKILL MATCHING
+// =====================================
+
+jobs = jobs.map(job => {
+
+    const requiredSkills = Array.isArray(job.required_skills)
+        ? job.required_skills
+        : [];
+
+    const normalizedRequiredSkills = requiredSkills
+        .map(skill => skill.trim().toLowerCase())
+        .filter(Boolean);
+
+    const matchedSkills = normalizedRequiredSkills.filter(skill =>
+        workerSkills.includes(skill)
+    );
+
+    const matchPercentage = normalizedRequiredSkills.length > 0
+        ? Math.round(
+            (matchedSkills.length / normalizedRequiredSkills.length) * 100
+          )
+        : 0;
+
+    return {
+        ...job,
+        matchedSkills,
+        matchPercentage
+    };
+});
+
+// Best skill matches first
+jobs.sort((a, b) =>
+    b.matchPercentage - a.matchPercentage
+);
 
 // =====================================
 // WORKER JOBS MAP

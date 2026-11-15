@@ -664,8 +664,6 @@ if (publishJobButton) {
         const wage = Number(document.getElementById("jobWage").value);
         const city = document.getElementById("jobCity").value.trim();
         const locationName =
-    document.getElementById("editJobLocationName").value.trim();
-        const locationName =
     document.getElementById("jobLocationName").value.trim();
         const vacancies = Number(document.getElementById("jobVacancies").value);
         const duration = Number(document.getElementById("jobDuration").value);
@@ -791,7 +789,7 @@ if (manageJobsButton) {
 
             const { data: jobs, error } = await supabaseClient
                 .from("jobs")
-                .select("id, title, description, required_skills, daily_wage, city, vacancies, duration_days, status, created_at")
+                .select("id, title, description, required_skills, daily_wage, city, location_name, latitude, longitude, vacancies, duration_days, status, created_at")
                 .eq("employer_id", user.id)
                 .order("created_at", { ascending: false });
 

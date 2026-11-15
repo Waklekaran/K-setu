@@ -247,6 +247,10 @@ document.getElementById("employerDashboard").hidden =
 
 document.getElementById("dashboardWelcome").textContent =
     "Welcome, " + profile.full_name + "!";
+        // Start live job alerts for workers only
+if (profile.role === "worker") {
+    startWorkerJobAlerts();
+}
     
 window.scrollTo(0, 0);
 

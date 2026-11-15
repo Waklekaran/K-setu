@@ -909,6 +909,18 @@ if (saveEditedJobButton) {
         const city = document.getElementById("editJobCity").value.trim();
         const vacancies = Number(document.getElementById("editJobVacancies").value);
         const duration = Number(document.getElementById("editJobDuration").value);
+        
+const selectedJobLatitude =
+    document.getElementById("jobLatitude").value;
+
+const selectedJobLongitude =
+    document.getElementById("jobLongitude").value;
+
+if (selectedJobLatitude === "" || selectedJobLongitude === "") {
+    alert("Please select the job location on the map!");
+    return;
+}
+
 
         if (!jobId || !title || !description || !skillsText || !city) {
             alert("Please fill all required fields!");

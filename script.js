@@ -1936,6 +1936,12 @@ if (workerMapElement && window.L) {
                 location.textContent =
                     "Work Location: " +
                     (job.location_name || job.city);
+                const distance = document.createElement("p");
+
+distance.textContent =
+    "Distance: " +
+    Number(job.distance_km).toFixed(2) +
+    " km away";
 
                 const wage = document.createElement("p");
                 wage.textContent =
@@ -1955,14 +1961,15 @@ if (workerMapElement && window.L) {
                     "Duration: " + job.duration_days + " days";
 
                 card.append(
-                    heading,
-                    description,
-                    location,
-                    wage,
-                    skills,
-                    vacancies,
-                    duration
-                );
+    heading,
+    description,
+    location,
+    distance,
+    wage,
+    skills,
+    vacancies,
+    duration
+);
 
                 jobsList.appendChild(card);
             });

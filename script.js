@@ -981,18 +981,25 @@ if (selectedJobLatitude === "" || selectedJobLongitude === "") {
             if (!user) throw new Error("Please login again.");
 
             const { error } = await supabaseClient
-                .from("jobs")
-                .update({
-                    title: title,
-                    description: description,
-                    required_skills: requiredSkills,
-                    daily_wage: wage,
-                    city: city,
-                    vacancies: vacancies,
-                    duration_days: duration
-                })
-                .eq("id", jobId)
-                .eq("employer_id", user.id);
+    .from("jobs")
+    .update({
+        title: title,
+        description: description,
+        required_skills: requiredSkills,
+        daily_wage: wage,
+        city: city,
+        location_name: locationName || city,
+        latitude: selectedJobLatitude === ""
+            ? null
+            : Number(selectedJobLatitude),
+        longitude: selectedJobLongitude === ""
+            ? null
+            : Number(selectedJobLongitude),
+        vacancies: vacancies,
+        duration_days: duration
+    })
+    .eq("id", jobId)
+    .eq("employer_id", user.id);
 
             if (error) throw error;
 

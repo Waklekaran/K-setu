@@ -837,6 +837,14 @@ editButton.addEventListener("click", function () {
         (job.required_skills || []).join(", ");
     document.getElementById("editJobWage").value = job.daily_wage;
     document.getElementById("editJobCity").value = job.city;
+    document.getElementById("editJobLocationName").value =
+    job.location_name || "";
+
+document.getElementById("editJobLatitude").value =
+    job.latitude ?? "";
+
+document.getElementById("editJobLongitude").value =
+    job.longitude ?? "";
     document.getElementById("editJobVacancies").value = job.vacancies;
     document.getElementById("editJobDuration").value = job.duration_days;
 

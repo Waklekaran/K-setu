@@ -740,8 +740,8 @@ if (publishJobButton) {
             document.getElementById("jobWage").value = "";
             document.getElementById("jobCity").value = "";
             document.getElementById("jobLatitude").value = "";
-document.getElementById("jobLongitude").value = "";
-document.getElementById("jobLocationStatus").textContent =
+            document.getElementById("jobLongitude").value = "";
+            document.getElementById("jobLocationStatus").textContent =
     "Please select job location on map.";
             document.getElementById("jobVacancies").value = "";
             document.getElementById("jobDuration").value = "";

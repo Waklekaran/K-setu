@@ -1540,6 +1540,80 @@ if (jobMapElement && window.L) {
     }).addTo(jobMap);
 
     let jobMarker = null;
+    // =====================================
+// SEARCH JOB LOCATION BY NAME
+// =====================================
+
+const searchJobLocationButton =
+    document.getElementById("searchJobLocationButton");
+
+if (searchJobLocationButton) {
+
+    searchJobLocationButton.addEventListener("click", async function () {
+
+        const locationName =
+            document.getElementById("jobLocationName").value.trim();
+
+        const status =
+            document.getElementById("jobLocationSearchStatus");
+
+        if (!locationName) {
+            alert("Please enter a location name!");
+            return;
+        }
+
+        try {
+            searchJobLocationButton.disabled = true;
+            searchJobLocationButton.textContent = "Searching...";
+            status.textContent = "Searching location...";
+
+            const response = await fetch(
+                "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&q=" +
+                encodeURIComponent(locationName)
+            );
+
+            if (!response.ok) {
+                throw new Error("Location search failed.");
+            }
+
+            const results = await response.json();
+
+            if (results.length === 0) {
+                status.textContent = "Location not found. Try another name.";
+                return;
+            }
+
+            const latitude = Number(results[0].lat);
+            const longitude = Number(results[0].lon);
+
+            jobMap.setView([latitude, longitude], 16);
+
+            if (jobMarker) {
+                jobMap.removeLayer(jobMarker);
+            }
+
+            jobMarker = L.marker([latitude, longitude])
+                .addTo(jobMap);
+
+            document.getElementById("jobLatitude").value = latitude;
+            document.getElementById("jobLongitude").value = longitude;
+
+            status.textContent =
+                "Location found: " + results[0].display_name;
+
+            document.getElementById("jobLocationStatus").textContent =
+                "Location selected: " +
+                latitude.toFixed(5) + ", " +
+                longitude.toFixed(5);
+
+        } catch (error) {
+            status.textContent = error.message;
+        } finally {
+            searchJobLocationButton.disabled = false;
+            searchJobLocationButton.textContent = "Search Location";
+        }
+    });
+}
 
     jobMap.on("click", function (event) {
 

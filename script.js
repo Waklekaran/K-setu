@@ -1801,6 +1801,8 @@ const { error: locationError } =
         .eq("user_id", userData.user.id);
 
 if (locationError) throw locationError;
+            // Start alerts after worker GPS location is saved
+await startWorkerJobAlerts();
 
 // Find jobs within 5 km
 const { data: nearbyJobs, error: nearbyError } =

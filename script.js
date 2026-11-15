@@ -1558,7 +1558,9 @@ if (saveVoiceSkillsButton) {
         alert("Voice text added! Review it, then click Save Skills.");
     });
 }
-
+let jobMap;
+let editJobMap;
+let editJobMarker;
 // =====================================
 // KARANX - EMPLOYER JOB LOCATION MAP
 // =====================================

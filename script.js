@@ -1003,12 +1003,6 @@ if (selectedJobLatitude === "" || selectedJobLongitude === "") {
     .eq("id", jobId)
     .eq("employer_id", user.id);
 
-if (error) throw error;
-
-alert("Job Updated Successfully!");
-
-document.getElementById("editJobSection").hidden = true;
-
             if (error) throw error;
 
             alert("Job updated successfully!");

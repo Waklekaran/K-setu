@@ -1757,6 +1757,19 @@ if (findJobsButton) {
             if (profile.role !== "worker") {
                 throw new Error("Only workers can find jobs.");
             }
+            // Get worker's saved skills
+const { data: workerProfile, error: workerProfileError } =
+    await supabaseClient
+        .from("worker_profiles")
+        .select("skills")
+        .eq("user_id", userData.user.id)
+        .single();
+
+if (workerProfileError) throw workerProfileError;
+
+const workerSkills = (workerProfile.skills || [])
+    .map(skill => skill.trim().toLowerCase())
+    .filter(Boolean);
 
             // Get worker's current GPS location
 const position = await new Promise((resolve, reject) => {

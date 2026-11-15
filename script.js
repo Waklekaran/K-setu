@@ -1505,6 +1505,44 @@ if (saveVoiceSkillsButton) {
     });
 }
 
+// =====================================
+// KARANX - EMPLOYER JOB LOCATION MAP
+// =====================================
+
+const jobMapElement = document.getElementById("jobMap");
+
+if (jobMapElement && window.L) {
+
+    const jobMap = L.map("jobMap").setView([19.0760, 72.8777], 12);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors"
+    }).addTo(jobMap);
+
+    let jobMarker = null;
+
+    jobMap.on("click", function (event) {
+
+        const latitude = event.latlng.lat;
+        const longitude = event.latlng.lng;
+
+        if (jobMarker) {
+            jobMap.removeLayer(jobMarker);
+        }
+
+        jobMarker = L.marker([latitude, longitude]).addTo(jobMap);
+
+        document.getElementById("jobLatitude").value = latitude;
+        document.getElementById("jobLongitude").value = longitude;
+
+        document.getElementById("jobLocationStatus").textContent =
+            "Location selected: " +
+            latitude.toFixed(5) + ", " +
+            longitude.toFixed(5);
+    });
+
+}
+
 
 
 

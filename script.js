@@ -948,11 +948,6 @@ const selectedJobLongitude =
 const selectedJobLongitude =
     document.getElementById("editJobLongitude").value;
 
-if (selectedJobLatitude === "" || selectedJobLongitude === "") {
-    alert("Please select the job location on the map!");
-    return;
-}
-
 
         if (!jobId || !title || !description || !skillsText || !city) {
             alert("Please fill all required fields!");

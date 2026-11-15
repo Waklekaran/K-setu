@@ -663,6 +663,8 @@ if (publishJobButton) {
         const skillsText = document.getElementById("jobSkills").value.trim();
         const wage = Number(document.getElementById("jobWage").value);
         const city = document.getElementById("jobCity").value.trim();
+        const locationName =
+    document.getElementById("jobLocationName").value.trim();
         const vacancies = Number(document.getElementById("jobVacancies").value);
         const duration = Number(document.getElementById("jobDuration").value);
 
@@ -722,6 +724,7 @@ if (publishJobButton) {
     required_skills: requiredSkills,
     daily_wage: wage,
     city: city,
+    location_name: locationName || city,
     vacancies: vacancies,
     duration_days: duration,
     status: "active",

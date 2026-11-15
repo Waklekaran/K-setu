@@ -2016,6 +2016,46 @@ distance.textContent =
                 const duration = document.createElement("p");
                 duration.textContent =
                     "Duration: " + job.duration_days + " days";
+                // Apply Now Button
+const applyButton = document.createElement("button");
+
+applyButton.textContent = "Apply Now";
+
+applyButton.addEventListener("click", async function () {
+    try {
+        applyButton.disabled = true;
+        applyButton.textContent = "Applying...";
+
+        const { data: { user }, error: userError } =
+            await supabaseClient.auth.getUser();
+
+        if (userError) throw userError;
+        if (!user) throw new Error("Please login again.");
+
+        const { error } = await supabaseClient
+            .from("applications")
+            .insert({
+                job_id: job.id,
+                worker_id: user.id,
+                status: "pending"
+            });
+
+        if (error) {
+            if (error.code === "23505") {
+                throw new Error("You have already applied for this job.");
+            }
+            throw error;
+        }
+
+        applyButton.textContent = "Applied";
+        alert("Application submitted successfully!");
+
+    } catch (error) {
+        alert("Application failed: " + error.message);
+        applyButton.disabled = false;
+        applyButton.textContent = "Apply Now";
+    }
+});
 
                 card.append(
     heading,

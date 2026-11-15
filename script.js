@@ -1758,27 +1758,80 @@ if (findJobsButton) {
                 throw new Error("Only workers can find jobs.");
             }
 
-            const { data: jobs, error: jobsError } =
-                await supabaseClient
-                    .from("jobs")
-                    .select(`
-                        id,
-                        title,
-                        description,
-                        required_skills,
-                        daily_wage,
-                        city,
-                        location_name,
-                        latitude,
-                        longitude,
-                        vacancies,
-                        duration_days,
-                        created_at
-                    `)
-                    .eq("status", "active")
-                    .order("created_at", { ascending: false });
+            // Get worker's current GPS location
+const position = await new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(
+        resolve,
+        reject,
+        {
+            enableHighAccuracy: true,
+            timeout: 15000,
+            maximumAge: 60000
+        }
+    );
+});
 
-            if (jobsError) throw jobsError;
+const workerLat = position.coords.latitude;
+const workerLon = position.coords.longitude;
+
+// Save worker location in Supabase
+const { error: locationError } =
+    await supabaseClient
+        .from("worker_profiles")
+        .update({
+            latitude: workerLat,
+            longitude: workerLon
+        })
+        .eq("user_id", userData.user.id);
+
+if (locationError) throw locationError;
+
+// Find jobs within 5 km
+const { data: nearbyJobs, error: nearbyError } =
+    await supabaseClient.rpc("find_nearby_jobs", {
+        worker_lat: workerLat,
+        worker_lon: workerLon
+    });
+
+if (nearbyError) throw nearbyError;
+
+// Fetch complete details of nearby jobs
+const nearbyJobIds = (nearbyJobs || []).map(job => job.job_id);
+
+let jobs = [];
+
+if (nearbyJobIds.length > 0) {
+    const { data: jobDetails, error: jobsError } =
+        await supabaseClient
+            .from("jobs")
+            .select(`
+                id,
+                title,
+                description,
+                required_skills,
+                daily_wage,
+                city,
+                location_name,
+                latitude,
+                longitude,
+                vacancies,
+                duration_days,
+                created_at
+            `)
+            .in("id", nearbyJobIds)
+            .eq("status", "active");
+
+    if (jobsError) throw jobsError;
+
+    jobs = jobDetails || [];
+
+    // Attach calculated distance to each job
+    jobs = jobs.map(job => ({
+        ...job,
+        distance_km:
+            nearbyJobs.find(item => item.job_id === job.id)?.distance_km
+    }));
+}
 
             jobsList.replaceChildren();
 

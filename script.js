@@ -664,6 +664,8 @@ if (publishJobButton) {
         const wage = Number(document.getElementById("jobWage").value);
         const city = document.getElementById("jobCity").value.trim();
         const locationName =
+    document.getElementById("editJobLocationName").value.trim();
+        const locationName =
     document.getElementById("jobLocationName").value.trim();
         const vacancies = Number(document.getElementById("jobVacancies").value);
         const duration = Number(document.getElementById("jobDuration").value);

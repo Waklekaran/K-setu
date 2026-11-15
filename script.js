@@ -2280,6 +2280,163 @@ if (myApplicationsButton) {
     });
 }
 
+// =====================================
+// KARANX - EMPLOYER RECEIVED APPLICATIONS
+// =====================================
+
+const receivedApplicationsButton =
+    document.getElementById("receivedApplicationsButton");
+
+if (receivedApplicationsButton) {
+    receivedApplicationsButton.addEventListener("click", loadReceivedApplications);
+}
+
+async function loadReceivedApplications() {
+    const section = document.getElementById("receivedApplicationsSection");
+    const list = document.getElementById("receivedApplicationsList");
+
+    section.hidden = false;
+    list.textContent = "Loading applications...";
+
+    try {
+        const { data: { user }, error: userError } =
+            await supabaseClient.auth.getUser();
+
+        if (userError) throw userError;
+        if (!user) throw new Error("Please login again.");
+
+        // Employer ki published jobs
+        const { data: jobs, error: jobsError } = await supabaseClient
+            .from("jobs")
+            .select("id, title")
+            .eq("employer_id", user.id);
+
+        if (jobsError) throw jobsError;
+
+        if (!jobs || jobs.length === 0) {
+            list.textContent = "You have not posted any jobs yet.";
+            return;
+        }
+
+        const jobIds = jobs.map(job => job.id);
+
+        // In jobs par aayi applications
+        const { data: applications, error: appError } =
+            await supabaseClient
+                .from("applications")
+                .select("id, job_id, worker_id, message, status, created_at")
+                .in("job_id", jobIds)
+                .order("created_at", { ascending: false });
+
+        if (appError) throw appError;
+
+        list.innerHTML = "";
+
+        if (!applications || applications.length === 0) {
+            list.textContent = "No applications received yet.";
+            return;
+        }
+
+        for (const app of applications) {
+            const job = jobs.find(item => item.id === app.job_id);
+
+            const { data: worker, error: workerError } =
+                await supabaseClient
+                    .from("profiles")
+                    .select("full_name, city")
+                    .eq("id", app.worker_id)
+                    .maybeSingle();
+
+            if (workerError) throw workerError;
+
+            const { data: workerDetails, error: detailsError } =
+                await supabaseClient
+                    .from("worker_profiles")
+                    .select("skills, experience_years")
+                    .eq("user_id", app.worker_id)
+                    .maybeSingle();
+
+            if (detailsError) throw detailsError;
+
+            const card = document.createElement("div");
+            card.className = "application-card";
+
+            const heading = document.createElement("h4");
+            heading.textContent = job ? job.title : "Job";
+
+            const name = document.createElement("p");
+            name.textContent = "Worker: " +
+                (worker?.full_name || "Name unavailable");
+
+            const city = document.createElement("p");
+            city.textContent = "City: " +
+                (worker?.city || "Not provided");
+
+            const skills = document.createElement("p");
+            skills.textContent = "Skills: " +
+                (workerDetails?.skills || []).join(", ");
+
+            const experience = document.createElement("p");
+            experience.textContent = "Experience: " +
+                (workerDetails?.experience_years ?? "Not provided") +
+                " years";
+
+            const message = document.createElement("p");
+            message.textContent = "Message: " +
+                (app.message || "No message provided");
+
+            const status = document.createElement("p");
+            status.textContent = "Status: " + app.status;
+
+            card.append(
+                heading, name, city, skills,
+                experience, message, status
+            );
+
+            if (app.status === "pending") {
+                const acceptButton = document.createElement("button");
+                acceptButton.textContent = "Accept";
+
+                const rejectButton = document.createElement("button");
+                rejectButton.textContent = "Reject";
+
+                acceptButton.addEventListener("click", () =>
+                    updateApplicationStatus(app.id, "accepted")
+                );
+
+                rejectButton.addEventListener("click", () =>
+                    updateApplicationStatus(app.id, "rejected")
+                );
+
+                card.append(acceptButton, rejectButton);
+            }
+
+            list.appendChild(card);
+        }
+
+    } catch (error) {
+        list.textContent = "Error: " + error.message;
+    }
+}
+
+async function updateApplicationStatus(applicationId, newStatus) {
+    try {
+        const { error } = await supabaseClient
+            .from("applications")
+            .update({ status: newStatus })
+            .eq("id", applicationId);
+
+        if (error) throw error;
+
+        alert("Application " + newStatus + " successfully!");
+
+        await loadReceivedApplications();
+
+    } catch (error) {
+        alert("Status update failed: " + error.message);
+    }
+}
+
 
 
     

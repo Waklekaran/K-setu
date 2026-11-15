@@ -1772,7 +1772,8 @@ if (findJobsButton) {
                         latitude,
                         longitude,
                         vacancies,
-                        duration_days
+                        duration_days,
+                        created_at
                     `)
                     .eq("status", "active")
                     .order("created_at", { ascending: false });

@@ -831,6 +831,14 @@ editButton.addEventListener("click", function () {
     document.getElementById("editJobSection").hidden = false;
 
     document.getElementById("editJobId").value = job.id;
+    document.getElementById("editJobLocationName").value =
+    job.location_name || "";
+
+document.getElementById("editJobLatitude").value =
+    job.latitude ?? "";
+
+document.getElementById("editJobLongitude").value =
+    job.longitude ?? "";
     document.getElementById("editJobTitle").value = job.title;
     document.getElementById("editJobDescription").value = job.description;
     document.getElementById("editJobSkills").value =

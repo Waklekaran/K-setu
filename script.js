@@ -996,12 +996,6 @@ const selectedJobLongitude =
     document.getElementById("editJobLongitude").value;
         const vacancies = Number(document.getElementById("editJobVacancies").value);
         const duration = Number(document.getElementById("editJobDuration").value);
-        
-        const selectedJobLatitude =
-    document.getElementById("editJobLatitude").value;
-
-const selectedJobLongitude =
-    document.getElementById("editJobLongitude").value;
 
 
         if (!jobId || !title || !description || !skillsText || !city) {

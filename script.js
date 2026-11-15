@@ -670,7 +670,7 @@ if (publishJobButton) {
         const selectedJobLatitude =
     document.getElementById("jobLatitude").value;
 
-const selectedJobLongitude =
+        const selectedJobLongitude =
     document.getElementById("jobLongitude").value;
 
         if (!title || !description || !skillsText || !city) {

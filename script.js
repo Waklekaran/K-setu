@@ -2062,6 +2062,30 @@ async function startWorkerJobAlerts() {
             .single();
 
     if (profileError || !profile || profile.role !== "worker") return;
+        // Load worker's saved location and skills
+    const { data: workerProfile, error: workerError } =
+        await supabaseClient
+            .from("worker_profiles")
+            .select("skills, latitude, longitude")
+            .eq("user_id", userData.user.id)
+            .single();
+
+    if (workerError) throw workerError;
+
+    if (
+        workerProfile.latitude == null ||
+        workerProfile.longitude == null
+    ) {
+        console.log("Open Find Jobs once to save your GPS location.");
+        return;
+    }
+
+    const workerLat = Number(workerProfile.latitude);
+    const workerLon = Number(workerProfile.longitude);
+
+    const workerSkills = (workerProfile.skills || [])
+        .map(skill => skill.trim().toLowerCase())
+        .filter(Boolean);
 
     // Avoid duplicate subscriptions
     if (jobAlertChannel) {

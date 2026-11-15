@@ -713,18 +713,22 @@ if (publishJobButton) {
             }
 
             const { error } = await supabaseClient
-                .from("jobs")
-                .insert({
-                    employer_id: user.id,
-                    title: title,
-                    description: description,
-                    required_skills: requiredSkills,
-                    daily_wage: wage,
-                    city: city,
-                    vacancies: vacancies,
-                    duration_days: duration,
-                    status: "active"
-                });
+                
+.from("jobs")
+.insert({
+    employer_id: user.id,
+    title: title,
+    description: description,
+    required_skills: requiredSkills,
+    daily_wage: wage,
+    city: city,
+    vacancies: vacancies,
+    duration_days: duration,
+    status: "active",
+    latitude: Number(selectedJobLatitude),
+    longitude: Number(selectedJobLongitude)
+});
+
 
             if (error) throw error;
 
@@ -735,6 +739,10 @@ if (publishJobButton) {
             document.getElementById("jobSkills").value = "";
             document.getElementById("jobWage").value = "";
             document.getElementById("jobCity").value = "";
+            document.getElementById("jobLatitude").value = "";
+document.getElementById("jobLongitude").value = "";
+document.getElementById("jobLocationStatus").textContent =
+    "Please select job location on map.";
             document.getElementById("jobVacancies").value = "";
             document.getElementById("jobDuration").value = "";
 

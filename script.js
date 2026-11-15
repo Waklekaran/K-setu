@@ -1976,6 +1976,10 @@ if (workerMapElement && window.L) {
 
                 const heading = document.createElement("h3");
                 heading.textContent = job.title;
+                const skillMatch = document.createElement("p");
+
+skillMatch.textContent =
+    "Skills Match: " + job.matchPercentage + "%";
 
                 const description = document.createElement("p");
                 description.textContent = job.description;
@@ -2010,6 +2014,7 @@ distance.textContent =
 
                 card.append(
     heading,
+    skillMatch,              
     description,
     location,
     distance,

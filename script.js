@@ -1783,64 +1783,6 @@ const position = await new Promise((resolve, reject) => {
         }
     );
 });
-// =====================================
-// KARANX - REALTIME JOB ALERTS
-// =====================================
-
-let jobAlertChannel = null;
-
-async function startWorkerJobAlerts() {
-
-    // Get logged-in user
-    const { data: userData, error: userError } =
-        await supabaseClient.auth.getUser();
-
-    if (userError || !userData.user) return;
-
-    // Verify worker role
-    const { data: profile, error: profileError } =
-        await supabaseClient
-            .from("profiles")
-            .select("role")
-            .eq("id", userData.user.id)
-            .single();
-
-    if (profileError || !profile || profile.role !== "worker") return;
-
-    // Avoid duplicate subscriptions
-    if (jobAlertChannel) {
-        await supabaseClient.removeChannel(jobAlertChannel);
-    }
-
-    jobAlertChannel = supabaseClient
-        .channel("karanx-worker-job-alerts")
-        .on(
-            "postgres_changes",
-            {
-                event: "INSERT",
-                schema: "public",
-                table: "jobs"
-            },
-            function (payload) {
-
-                const newJob = payload.new;
-
-                if (newJob.status !== "active") return;
-
-                console.log(
-                    "New job detected:",
-                    newJob.title
-                );
-
-                alert(
-                    "New job posted on KaranX: " +
-                    newJob.title +
-                    "\nOpen Find Jobs to check distance and skill matching."
-                );
-            }
-        )
-        .subscribe();
-}
 const workerLat = position.coords.latitude;
 const workerLon = position.coords.longitude;
 
@@ -2093,7 +2035,64 @@ distance.textContent =
         }
     });
 }
+// =====================================
+// KARANX - REALTIME JOB ALERTS
+// =====================================
 
+let jobAlertChannel = null;
+
+async function startWorkerJobAlerts() {
+
+    // Get logged-in user
+    const { data: userData, error: userError } =
+        await supabaseClient.auth.getUser();
+
+    if (userError || !userData.user) return;
+
+    // Verify worker role
+    const { data: profile, error: profileError } =
+        await supabaseClient
+            .from("profiles")
+            .select("role")
+            .eq("id", userData.user.id)
+            .single();
+
+    if (profileError || !profile || profile.role !== "worker") return;
+
+    // Avoid duplicate subscriptions
+    if (jobAlertChannel) {
+        await supabaseClient.removeChannel(jobAlertChannel);
+    }
+
+    jobAlertChannel = supabaseClient
+        .channel("karanx-worker-job-alerts")
+        .on(
+            "postgres_changes",
+            {
+                event: "INSERT",
+                schema: "public",
+                table: "jobs"
+            },
+            function (payload) {
+
+                const newJob = payload.new;
+
+                if (newJob.status !== "active") return;
+
+                console.log(
+                    "New job detected:",
+                    newJob.title
+                );
+
+                alert(
+                    "New job posted on KaranX: " +
+                    newJob.title +
+                    "\nOpen Find Jobs to check distance and skill matching."
+                );
+            }
+        )
+        .subscribe();
+}
 
 
 

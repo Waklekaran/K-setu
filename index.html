@@ -631,6 +631,28 @@ window.scrollTo(0, 0);
     <label>Job City</label>
     <input type="text" id="jobCity"
         placeholder="Enter city" required>
+    
+<label for="jobMap">Select Exact Work Location</label>
+<p>Map पर काम वाली जगह पर क्लिक करें।</p>
+
+<div id="jobMap"
+     style="height:300px; width:100%; border-radius:12px;">
+</div>
+
+<input
+    type="hidden"
+    id="jobLatitude"
+>
+
+<input
+    type="hidden"
+    id="jobLongitude"
+>
+
+<p id="jobLocationStatus">
+    Please select job location on map.
+</p>
+
 
     <label>Number of Vacancies</label>
     <input type="number" id="jobVacancies"

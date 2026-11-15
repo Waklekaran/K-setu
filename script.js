@@ -2101,26 +2101,53 @@ async function startWorkerJobAlerts() {
                 schema: "public",
                 table: "jobs"
             },
-            function (payload) {
+            async function (payload) {
 
-                const newJob = payload.new;
+    const newJob = payload.new;
 
-                if (newJob.status !== "active") return;
+    if (newJob.status !== "active") return;
 
-                console.log(
-                    "New job detected:",
-                    newJob.title
-                );
+    // Check whether this job is within 5 km
+    const { data: nearbyJobs, error: nearbyError } =
+        await supabaseClient.rpc("find_nearby_jobs", {
+            worker_lat: workerLat,
+            worker_lon: workerLon
+        });
 
-                alert(
-                    "New job posted on KaranX: " +
-                    newJob.title +
-                    "\nOpen Find Jobs to check distance and skill matching."
-                );
+    if (nearbyError) {
+        console.error("Nearby job check failed:", nearbyError);
+        return;
+    }
+
+    const nearbyMatch = (nearbyJobs || []).find(
+        job => job.job_id === newJob.id
+    );
+
+    if (!nearbyMatch) return;
+
+    // Compare worker skills with job skills
+    const requiredSkills = Array.isArray(newJob.required_skills)
+        ? newJob.required_skills
+        : [];
+
+    const matchedSkills = requiredSkills.filter(skill =>
+        workerSkills.includes(skill.trim().toLowerCase())
+    );
+
+    if (matchedSkills.length === 0) return;
+
+    const matchPercentage = Math.round(
+        (matchedSkills.length / requiredSkills.length) * 100
+    );
+
+    alert(
+        "New Matching Job on KaranX!\n\n" +
+        newJob.title +
+        "\nDistance: " + nearbyMatch.distance_km + " km" +
+        "\nSkills Match: " + matchPercentage + "%" +
+        "\nMatched Skills: " + matchedSkills.join(", ")
+    );
             }
-        )
-        .subscribe();
-}
 
 
 

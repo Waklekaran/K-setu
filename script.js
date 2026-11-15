@@ -1667,7 +1667,134 @@ if (searchJobLocationButton) {
     });
 
 }
+// =====================================
+// KARANX - WORKER FIND JOBS
+// =====================================
 
+const findJobsButton =
+    document.getElementById("findJobsButton");
+
+if (findJobsButton) {
+
+    findJobsButton.addEventListener("click", async function () {
+
+        const section =
+            document.getElementById("findJobsSection");
+
+        const jobsList =
+            document.getElementById("workerJobsList");
+
+        section.hidden = false;
+        jobsList.textContent = "Loading available jobs...";
+
+        try {
+            findJobsButton.disabled = true;
+
+            const { data: userData, error: userError } =
+                await supabaseClient.auth.getUser();
+
+            if (userError) throw userError;
+
+            if (!userData.user) {
+                throw new Error("Please login first.");
+            }
+
+            const { data: profile, error: profileError } =
+                await supabaseClient
+                    .from("profiles")
+                    .select("role")
+                    .eq("id", userData.user.id)
+                    .single();
+
+            if (profileError) throw profileError;
+
+            if (profile.role !== "worker") {
+                throw new Error("Only workers can find jobs.");
+            }
+
+            const { data: jobs, error: jobsError } =
+                await supabaseClient
+                    .from("jobs")
+                    .select(`
+                        id,
+                        title,
+                        description,
+                        required_skills,
+                        daily_wage,
+                        city,
+                        location_name,
+                        latitude,
+                        longitude,
+                        vacancies,
+                        duration_days
+                    `)
+                    .eq("status", "active")
+                    .order("created_at", { ascending: false });
+
+            if (jobsError) throw jobsError;
+
+            jobsList.replaceChildren();
+
+            if (!jobs || jobs.length === 0) {
+                jobsList.textContent = "No active jobs available.";
+                return;
+            }
+
+            jobs.forEach(function (job) {
+
+                const card = document.createElement("div");
+                card.className = "worker-feature";
+
+                const heading = document.createElement("h3");
+                heading.textContent = job.title;
+
+                const description = document.createElement("p");
+                description.textContent = job.description;
+
+                const location = document.createElement("p");
+                location.textContent =
+                    "Work Location: " +
+                    (job.location_name || job.city);
+
+                const wage = document.createElement("p");
+                wage.textContent =
+                    "Daily Wage: ₹" + job.daily_wage;
+
+                const skills = document.createElement("p");
+                skills.textContent =
+                    "Required Skills: " +
+                    (job.required_skills || []).join(", ");
+
+                const vacancies = document.createElement("p");
+                vacancies.textContent =
+                    "Vacancies: " + job.vacancies;
+
+                const duration = document.createElement("p");
+                duration.textContent =
+                    "Duration: " + job.duration_days + " days";
+
+                card.append(
+                    heading,
+                    description,
+                    location,
+                    wage,
+                    skills,
+                    vacancies,
+                    duration
+                );
+
+                jobsList.appendChild(card);
+            });
+
+        } catch (error) {
+            jobsList.textContent =
+                "Jobs loading failed: " + error.message;
+
+        } finally {
+            findJobsButton.disabled = false;
+        }
+    });
+}
 
 
 

@@ -931,6 +931,14 @@ if (saveEditedJobButton) {
         const skillsText = document.getElementById("editJobSkills").value.trim();
         const wage = Number(document.getElementById("editJobWage").value);
         const city = document.getElementById("editJobCity").value.trim();
+        const locationName =
+    document.getElementById("editJobLocationName").value.trim();
+
+const selectedJobLatitude =
+    document.getElementById("editJobLatitude").value;
+
+const selectedJobLongitude =
+    document.getElementById("editJobLongitude").value;
         const vacancies = Number(document.getElementById("editJobVacancies").value);
         const duration = Number(document.getElementById("editJobDuration").value);
         

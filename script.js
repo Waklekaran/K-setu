@@ -1788,9 +1788,90 @@ if (findJobsButton) {
             jobsList.replaceChildren();
 
             if (!jobs || jobs.length === 0) {
-                jobsList.textContent = "No active jobs available.";
-                return;
-            }
+    jobsList.textContent = "No active jobs available.";
+
+    const mapStatus = document.getElementById("workerMapStatus");
+    if (mapStatus) {
+        mapStatus.textContent = "No active job locations available.";
+    }
+
+    return;
+}
+
+// =====================================
+// WORKER JOBS MAP
+// =====================================
+
+const workerMapElement = document.getElementById("workerJobsMap");
+const mapStatus = document.getElementById("workerMapStatus");
+
+if (workerMapElement && window.L) {
+
+    if (!window.workerJobsMapInstance) {
+        window.workerJobsMapInstance =
+            L.map("workerJobsMap").setView([19.0760, 72.8777], 11);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "&copy; OpenStreetMap contributors"
+        }).addTo(window.workerJobsMapInstance);
+    }
+
+    const workerMap = window.workerJobsMapInstance;
+
+    if (window.workerJobMarkers) {
+        window.workerJobMarkers.forEach(marker => marker.remove());
+    }
+
+    window.workerJobMarkers = [];
+
+    const locatedJobs = jobs.filter(job =>
+        Number.isFinite(Number(job.latitude)) &&
+        Number.isFinite(Number(job.longitude)) &&
+        job.latitude !== null &&
+        job.longitude !== null
+    );
+
+    locatedJobs.forEach(function (job) {
+
+        const marker = L.marker([
+            Number(job.latitude),
+            Number(job.longitude)
+        ]).addTo(workerMap);
+
+        marker.bindPopup(
+            "<strong>" +
+            String(job.title).replace(/[&<>"']/g, "") +
+            "</strong><br>" +
+            String(job.location_name || job.city).replace(/[&<>"']/g, "")
+        );
+
+        window.workerJobMarkers.push(marker);
+    });
+
+    if (locatedJobs.length > 0) {
+        const bounds = L.latLngBounds(
+            locatedJobs.map(job => [
+                Number(job.latitude),
+                Number(job.longitude)
+            ])
+        );
+
+        workerMap.fitBounds(bounds, { padding: [30, 30], maxZoom: 15 });
+
+        if (mapStatus) {
+            mapStatus.textContent =
+                locatedJobs.length + " job location(s) shown on map.";
+        }
+    } else if (mapStatus) {
+        mapStatus.textContent =
+            "Jobs found, but no map coordinates are saved yet.";
+    }
+
+    setTimeout(() => workerMap.invalidateSize(), 200);
+
+} else if (mapStatus) {
+    mapStatus.textContent = "Map library is not loaded.";
+}
 
             jobs.forEach(function (job) {
 

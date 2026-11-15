@@ -667,6 +667,11 @@ if (publishJobButton) {
     document.getElementById("jobLocationName").value.trim();
         const vacancies = Number(document.getElementById("jobVacancies").value);
         const duration = Number(document.getElementById("jobDuration").value);
+        const selectedJobLatitude =
+    document.getElementById("jobLatitude").value;
+
+const selectedJobLongitude =
+    document.getElementById("jobLongitude").value;
 
         if (!title || !description || !skillsText || !city) {
             alert("Please fill all required fields!");

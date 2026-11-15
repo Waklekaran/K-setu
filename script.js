@@ -2195,7 +2195,90 @@ async function startWorkerJobAlerts() {
             console.log("KaranX Job Alerts:", status);
         });
 }
+// =====================================
+// KARANX - MY APPLICATIONS
+// =====================================
 
+const myApplicationsButton =
+    document.getElementById("myApplicationsButton");
+
+if (myApplicationsButton) {
+    myApplicationsButton.addEventListener("click", async function () {
+
+        const section =
+            document.getElementById("myApplicationsSection");
+
+        const list =
+            document.getElementById("myApplicationsList");
+
+        section.hidden = false;
+        list.innerHTML = "<p>Loading applications...</p>";
+
+        try {
+            const { data: { user }, error: userError } =
+                await supabaseClient.auth.getUser();
+
+            if (userError) throw userError;
+            if (!user) throw new Error("Please login again.");
+
+            const { data, error } = await supabaseClient
+                .from("applications")
+                .select(`
+                    id,
+                    status,
+                    message,
+                    created_at,
+                    jobs (
+                        title,
+                        city,
+                        daily_wage
+                    )
+                `)
+                .eq("worker_id", user.id)
+                .order("created_at", { ascending: false });
+
+            if (error) throw error;
+
+            list.innerHTML = "";
+
+            if (!data || data.length === 0) {
+                list.innerHTML =
+                    "<p>You have not applied for any jobs yet.</p>";
+                return;
+            }
+
+            data.forEach(function (application) {
+                const card = document.createElement("div");
+                card.className = "worker-feature";
+
+                const job = application.jobs;
+
+                const heading = document.createElement("h4");
+                heading.textContent =
+                    job ? job.title : "Job details unavailable";
+
+                const city = document.createElement("p");
+                city.textContent = "City: " +
+                    (job?.city || "Not available");
+
+                const wage = document.createElement("p");
+                wage.textContent = "Daily Wage: ₹" +
+                    (job?.daily_wage ?? "Not available");
+
+                const status = document.createElement("p");
+                status.textContent =
+                    "Application Status: " + application.status;
+
+                card.append(heading, city, wage, status);
+                list.appendChild(card);
+            });
+
+        } catch (error) {
+            list.textContent =
+                "Error loading applications: " + error.message;
+        }
+    });
+}
 
 
 

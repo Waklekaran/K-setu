@@ -923,13 +923,21 @@ if (saveEditedJobButton) {
         const skillsText = document.getElementById("editJobSkills").value.trim();
         const wage = Number(document.getElementById("editJobWage").value);
         const city = document.getElementById("editJobCity").value.trim();
+        document.getElementById("editJobLocationName").value =
+    job.location_name || "";
+
+       document.getElementById("editJobLatitude").value =
+    job.latitude ?? "";
+
+       document.getElementById("editJobLongitude").value =
+    job.longitude ?? "";
         const vacancies = Number(document.getElementById("editJobVacancies").value);
         const duration = Number(document.getElementById("editJobDuration").value);
         
-const selectedJobLatitude =
+        const selectedJobLatitude =
     document.getElementById("jobLatitude").value;
 
-const selectedJobLongitude =
+        const selectedJobLongitude =
     document.getElementById("jobLongitude").value;
 
 if (selectedJobLatitude === "" || selectedJobLongitude === "") {

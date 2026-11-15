@@ -853,6 +853,53 @@ document.getElementById("editJobLatitude").value =
 
 document.getElementById("editJobLongitude").value =
     job.longitude ?? "";
+    // Initialize Edit Job Map
+const editMapElement = document.getElementById("editJobMap");
+
+if (editMapElement && window.L) {
+
+    const lat = Number(job.latitude) || 19.0760;
+    const lon = Number(job.longitude) || 72.8777;
+
+    if (!editJobMap) {
+        editJobMap = L.map("editJobMap").setView([lat, lon], 15);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "&copy; OpenStreetMap contributors"
+        }).addTo(editJobMap);
+
+        editJobMap.on("click", function (e) {
+            const newLat = e.latlng.lat;
+            const newLon = e.latlng.lng;
+
+            if (editJobMarker) {
+                editJobMarker.setLatLng(e.latlng);
+            } else {
+                editJobMarker = L.marker(e.latlng).addTo(editJobMap);
+            }
+
+            document.getElementById("editJobLatitude").value = newLat;
+            document.getElementById("editJobLongitude").value = newLon;
+
+            document.getElementById("editJobLocationStatus").textContent =
+                "New location selected successfully!";
+        });
+    }
+
+    editJobMap.setView([lat, lon], 15);
+
+    if (job.latitude && job.longitude) {
+        if (editJobMarker) {
+            editJobMarker.setLatLng([lat, lon]);
+        } else {
+            editJobMarker = L.marker([lat, lon]).addTo(editJobMap);
+        }
+    }
+
+    setTimeout(function () {
+        editJobMap.invalidateSize();
+    }, 300);
+}
     document.getElementById("editJobVacancies").value = job.vacancies;
     document.getElementById("editJobDuration").value = job.duration_days;
 

@@ -2066,7 +2066,8 @@ applyButton.addEventListener("click", async function () {
     wage,
     skills,
     vacancies,
-    duration
+    duration,
+    applyButton
 );
 
                 jobsList.appendChild(card);
